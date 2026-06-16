@@ -6,7 +6,7 @@
     <title>World Football Tournament Simulation Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;800;900&display=swap\" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -22,102 +22,186 @@
             
             --accent-primary: #38bdf8;
             --accent-primary-hover: #0ea5e9;
-            --accent-secondary: #a855f7;
-            --accent-success: #22c55e;
-            --accent-danger: #ef4444;
-            --accent-warning: #f59e0b;
+            --accent-neon-green: #10b981;
+            --accent-neon-glow: #06b6d4;
+            --accent-neon-orange: #f97316;
+            --accent-neon-crimson: #ef4444;
             
-            --text-main: #f8fafc;
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --text-dark: #0f172a;
+            
             --border-color: #334155;
-            --pitch-grass: #15803d;
-            --pitch-lines: rgba(255, 255, 255, 0.6);
+            --border-glow: rgba(56, 189, 248, 0.2);
             
-            --font-sans: 'Inter', sans-serif;
+            --font-display: 'Orbitron', system-ui, sans-serif;
+            --font-sans: 'Inter', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
-            --font-sports: 'Orbitron', sans-serif;
             
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --transition-speed: 0.2s;
+            --sidebar-width: 280px;
+            --transition-speed: 0.25s;
         }
 
-        /* ==========================================================================
-           2. GLOBAL RESET & BASE LAYOUT HIERARCHY
-           ========================================================================== */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            font-family: var(--font-sans);
             background-color: var(--bg-global);
             color: var(--text-main);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            display: flex;
             min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           2. LAYOUT ARCHITECTURE (SIDEBAR & MAIN CONSOLE)
+           ========================================================================== */
+        aside.app-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            line-height: 1.5;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.4);
         }
 
-        header {
-            background-color: var(--bg-sidebar);
+        .sidebar-brand {
+            padding: 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow-md);
-            z-index: 10;
         }
 
-        .header-title-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-title-container i {
-            font-size: 2rem;
+        .sidebar-brand i {
+            font-size: 1.75rem;
             color: var(--accent-primary);
-            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+            text-shadow: 0 0 10px var(--border-glow);
         }
 
-        .header-title-container h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-primary));
+        .sidebar-brand h1 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--accent-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .global-control-panel {
+        nav.sidebar-navigation {
+            padding: 1.5rem 1rem;
             display: flex;
-            gap: 12px;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav-item:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .sidebar-nav-item.active {
+            color: var(--accent-primary);
+            background-color: rgba(56, 189, 248, 0.08);
+            border-left-color: var(--accent-primary);
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+        }
+
+        .sidebar-nav-item i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            text-align: center;
+        }
+
+        main.app-main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2.5rem;
+            min-width: 0;
+        }
+
+        header.content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .header-title-area h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-title-area p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .header-actions-controls {
+            display: flex;
+            gap: 1rem;
             align-items: center;
         }
 
         /* ==========================================================================
-           3. BUTTONS & UI COMPONENT STYLING
+           3. BUTTONS & UI INTERACTIVE ELEMENTS
            ========================================================================== */
         .btn {
-            font-family: var(--font-sans);
-            font-weight: 600;
-            font-size: 0.875rem;
-            padding: 0.625rem 1.25rem;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
             transition: all var(--transition-speed) ease;
-            box-shadow: var(--shadow-sm);
         }
 
         .btn-primary {
@@ -127,1083 +211,862 @@
 
         .btn-primary:hover {
             background-color: var(--accent-primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
-        }
-
-        .btn-primary:disabled {
-            background-color: var(--bg-input);
-            color: var(--text-muted);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
         }
 
         .btn-secondary {
-            background-color: var(--accent-secondary);
+            background-color: transparent;
+            border-color: var(--border-color);
             color: var(--text-main);
         }
 
         .btn-secondary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-muted);
         }
 
-        .btn-success {
-            background-color: var(--accent-success);
+        .btn-accent {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: var(--accent-neon-green);
+            color: var(--accent-neon-green);
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-neon-green);
             color: var(--text-dark);
-        }
-
-        .btn-success:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .btn-danger {
-            background-color: var(--accent-danger);
-            color: var(--text-main);
-        }
-
-        .btn-danger:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
 
         /* ==========================================================================
-           4. TAB NAVIGATION LAYOUT CONFIGURATION
+           4. PANELS AND CONDITIONAL VISIBILITY
            ========================================================================== */
-        .tab-navigator-container {
-            background-color: var(--bg-sidebar);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            padding: 0 2rem;
-            gap: 4px;
-            overflow-x: auto;
-        }
-
-        .tab-button {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-family: var(--font-sans);
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 1rem 1.25rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 3px solid transparent;
-            transition: all var(--transition-speed) ease;
-            white-space: nowrap;
-        }
-
-        .tab-button:hover {
-            color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-
-        .tab-button.active {
-            color: var(--accent-primary);
-            border-bottom-color: var(--accent-primary);
-            background-color: rgba(56, 189, 248, 0.05);
-        }
-
-        .main-content-canvas {
-            flex: 1;
-            padding: 2rem;
-            position: relative;
-            overflow-y: auto;
-        }
-
-        .tab-view-panel {
+        .app-panel-view {
             display: none;
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.4s ease forwards;
         }
 
-        .tab-view-panel.active {
+        .app-panel-view.active {
             display: block;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* ==========================================================================
-           5. GROUP STAGE INTERACTIVE LAYOUT BLOCKS
+           5. DASHBOARD STATS GRID OVERVIEW
            ========================================================================== */
-        .group-stage-grid {
+        .dashboard-summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
-        .group-card {
+        .stat-card-node {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent-primary);
+        }
+
+        .stat-card-node.green::before { background-color: var(--accent-neon-green); }
+        .stat-card-node.orange::before { background-color: var(--accent-neon-orange); }
+
+        .stat-info-block p {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-info-block h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 900;
+        }
+
+        .stat-icon-wrapper {
+            font-size: 2.25rem;
+            color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ==========================================================================
+           6. MODULES STRUCTURE & RESPONSIVE CONTAINERS
+           ========================================================================== */
+        .module-row-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+
+        @media (max-width: 1200px) {
+            .col-8, .col-4, .col-6 { grid-column: span 12; }
+        }
+
+        .panel-component-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        .group-card-header {
+        .card-header-banner {
             background-color: var(--bg-card-header);
-            padding: 0.75rem 1rem;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .group-title {
-            font-size: 1.1rem;
+        .card-header-banner h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
-        .group-card-actions {
-            display: flex;
-            gap: 6px;
+        .card-header-banner h4 i {
+            color: var(--accent-primary);
         }
 
-        .btn-mini {
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            border-radius: 4px;
+        .card-body-content {
+            padding: 1.5rem;
+            flex: 1;
         }
 
-        .group-table {
+        /* ==========================================================================
+           7. CUSTOM TABLES AND DATA RENDER LAYOUTS
+           ========================================================================== */
+        .table-responsive-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .data-table-element {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.825rem;
             text-align: left;
+            font-size: 0.9rem;
         }
 
-        .group-table th, .group-table td {
-            padding: 0.5rem 0.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .group-table th {
-            background-color: rgba(0, 0, 0, 0.15);
-            color: var(--text-muted);
+        .data-table-element th {
+            background-color: rgba(0,0,0,0.15);
+            padding: 0.75rem 1rem;
             font-weight: 600;
+            color: var(--text-muted);
             text-transform: uppercase;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .group-table tr:last-child td {
+        .data-table-element td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            vertical-align: middle;
+        }
+
+        .data-table-element tr:last-child td {
             border-bottom: none;
         }
 
-        .team-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
+        .data-table-element tbody tr:hover td {
+            background-color: rgba(255,255,255,0.01);
         }
 
-        .flag-icon {
-            width: 20px;
-            height: 14px;
+        /* Group standings explicit columns styles templates formatting */
+        .col-team { font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .col-num { font-family: var(--font-mono); text-align: center; width: 40px; }
+        th.col-num { text-align: center; }
+        .col-pts { font-family: var(--font-mono); font-weight: 700; color: var(--accent-primary); text-align: center; width: 50px;}
+
+        .team-flag-icon {
+            width: 24px;
+            height: 16px;
             object-fit: cover;
             border-radius: 2px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
             background-color: #334155;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.65rem;
+            line-height: 16px;
+            font-weight: bold;
+            color: #fff;
         }
 
-        .advancing-1st { border-left: 3px solid var(--accent-success); }
-        .advancing-2nd { border-left: 3px solid var(--accent-primary); }
-        .advancing-3rd { border-left: 3px solid var(--accent-warning); }
+        /* ==========================================================================
+           8. GROUP STAGE MATCH GRID GRID CARD ELEMENTS
+           ========================================================================== */
+        .groups-container-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
 
-        .group-matchups-container {
-            border-top: 1px dashed var(--border-color);
+        .group-block-node {
+            background-color: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .group-block-title {
+            background-color: rgba(0, 0, 0, 0.2);
             padding: 0.75rem 1rem;
-            background-color: rgba(0, 0, 0, 0.1);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--accent-primary);
+            letter-spacing: 0.5px;
+        }
+
+        .match-fixtures-list {
+            padding: 0.5rem;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            max-height: 160px;
-            overflow-y: auto;
+            gap: 0.5rem;
         }
 
-        .match-row-item {
+        .fixture-item-row {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            padding: 0.65rem 0.75rem;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            padding: 4px 0;
+            font-size: 0.85rem;
         }
 
-        .match-teams-block {
+        .fixture-team-block {
             display: flex;
             align-items: center;
-            gap: 6px;
-            width: 65%;
+            gap: 0.5rem;
+            width: 40%;
         }
 
-        .match-team-name {
-            white-space: nowrap;
+        .fixture-team-block.team-b {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+        .fixture-team-name {
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
         }
 
-        .match-vs-divider {
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            margin: 0 4px;
-        }
-
-        .match-score-inputs-block {
+        .fixture-score-block {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 0.25rem;
+            width: 20%;
+            justify-content: center;
         }
 
-        .score-input {
+        .score-input-box {
             width: 28px;
-            height: 22px;
+            height: 24px;
             background-color: var(--bg-input);
             border: 1px solid var(--border-color);
-            color: var(--text-main);
+            border-radius: 4px;
+            color: #fff;
             text-align: center;
             font-family: var(--font-mono);
-            font-size: 0.8rem;
             font-weight: 700;
-            border-radius: 3px;
+            font-size: 0.85rem;
         }
 
-        .score-input:focus {
+        .score-input-box:focus {
             outline: none;
             border-color: var(--accent-primary);
+            box-shadow: 0 0 5px var(--border-glow);
         }
 
-        .score-input.manual-override {
-            background-color: rgba(168, 85, 247, 0.2);
-            border-color: var(--accent-secondary);
+        .score-input-box::-webkit-inner-spin-button, 
+        .score-input-box::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
         }
 
-        .score-input.simulated-value {
-            color: var(--accent-primary);
-        }
-
-        .match-incidents-summary {
-            font-size: 0.7rem;
+        .score-divider-colon {
             color: var(--text-muted);
-            text-align: right;
-            width: 15%;
-            white-space: nowrap;
-        }
-
-        /* ==========================================================================
-           6. WILDCARD SANDBOX STRUCTURES
-           ========================================================================== */
-        .wildcard-explanation-box {
-            background-color: rgba(56, 189, 248, 0.05);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.875rem;
-        }
-
-        .wildcard-table-wrapper {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .status-badge {
-            font-size: 0.7rem;
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .status-badge-advance {
-            background-color: rgba(34, 197, 94, 0.15);
-            color: var(--accent-success);
-        }
-
-        .status-badge-eliminated {
-            background-color: rgba(239, 68, 68, 0.15);
-            color: var(--accent-danger);
         }
 
         /* ==========================================================================
-           7. VISUAL KNOCKOUT TREE DESIGN BRACKET
+           9. KNOCKOUT STAGES GRAPHICAL VISUAL BRACKET PLATFORM
            ========================================================================== */
-        .bracket-scroll-viewport {
+        .bracket-scroll-canvas {
             width: 100%;
             overflow-x: auto;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
         }
 
-        .bracket-tree-canvas {
+        .bracket-structure-pipeline {
             display: flex;
-            gap: 2.5rem;
-            min-width: 1400px;
             justify-content: space-between;
-            position: relative;
-            padding: 20px;
+            align-items: center;
+            min-width: 1200px;
+            gap: 2rem;
+            padding: 0 1rem;
         }
 
-        .bracket-column-stage {
+        .bracket-stage-column {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            flex: 1;
-            min-width: 220px;
+            height: 720px;
+            position: relative;
         }
 
-        .bracket-stage-header {
+        .bracket-stage-header-tag {
             text-align: center;
-            font-family: var(--font-sports);
+            font-family: var(--font-display);
             font-size: 0.8rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--accent-primary);
-            margin-bottom: 1rem;
-            background-color: var(--bg-sidebar);
-            padding: 6px;
+            color: var(--text-muted);
+            background-color: rgba(0,0,0,0.2);
+            padding: 0.4rem;
             border-radius: 4px;
             border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            position: absolute;
+            top: -40px;
+            width: 100%;
         }
 
         .bracket-match-node {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
+            width: 100%;
             overflow: hidden;
-            margin: 10px 0;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             position: relative;
-            transition: transform var(--transition-speed);
         }
 
-        .bracket-match-node:hover {
-            transform: scale(1.02);
-            border-color: var(--accent-primary);
-            z-index: 5;
-        }
-
-        .node-team-row {
+        .bracket-match-info-strip {
+            background-color: rgba(0,0,0,0.15);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem;
-            font-size: 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            height: 36px;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
         }
 
-        .node-team-row:last-child {
+        .bracket-team-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .bracket-team-line:last-child {
             border-bottom: none;
         }
 
-        .node-team-info {
+        .bracket-team-line.winner-highlight {
+            background-color: rgba(16, 185, 129, 0.04);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .bracket-team-identity {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-weight: 500;
+            gap: 0.5rem;
             overflow: hidden;
-            white-space: nowrap;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .node-team-score-badge {
-            background-color: rgba(0,0,0,0.2);
+        .bracket-team-score-span {
             font-family: var(--font-mono);
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 3px;
-            min-width: 24px;
-            text-align: center;
+            color: var(--text-muted);
         }
 
-        .node-team-row.winner-highlight {
-            background-color: rgba(34, 197, 94, 0.08);
-            color: #fff;
+        .bracket-team-line.winner-highlight .bracket-team-score-span {
+            color: var(--accent-neon-green);
+        }
+
+        /* Championship structural grand node frame styling rules specs */
+        .bracket-stage-column.stage-grand-final .bracket-match-node {
+            border: 2px solid var(--accent-neon-orange);
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+        }
+        
+        .bracket-stage-column.stage-grand-final .bracket-match-info-strip {
+            background-color: rgba(249, 115, 22, 0.1);
+            color: var(--accent-neon-orange);
             font-weight: 700;
-        }
-
-        .node-team-row.winner-highlight .node-team-score-badge {
-            background-color: var(--accent-success);
-            color: var(--text-dark);
-        }
-
-        .match-meta-suffix {
-            font-size: 0.65rem;
-            color: var(--accent-secondary);
-            font-family: var(--font-mono);
-            text-align: center;
-            background-color: rgba(0,0,0,0.15);
-            padding: 2px 0;
-            border-top: 1px solid rgba(255,255,255,0.03);
-        }
-
-        .grand-final-node {
-            border: 2px dashed var(--accent-warning);
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
-        }
-
-        .grand-final-node .bracket-stage-header {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--accent-warning);
-            border-color: var(--accent-warning);
         }
 
         /* ==========================================================================
-           8. MONTE CARLO ANALYTICS GRID & TABLES
+           10. TACTICAL BLACKBOARD AND CANVAS GRAPHICS ARCHITECTURE
            ========================================================================== */
-        .analytics-control-dashboard {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            align-items: center;
+        .tactical-control-panel-wrapper {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
         }
 
-        .control-input-group {
+        @media (max-width: 992px) {
+            .tactical-control-panel-wrapper { grid-template-columns: 1fr; }
+        }
+
+        .tactical-sidebar-parameters {
+            background-color: rgba(15, 23, 42, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 1.5rem;
         }
 
-        .control-input-group label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
+        .parameter-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .parameter-input-group label {
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
         }
 
-        .select-input, .text-field-input {
+        .custom-select-element {
             background-color: var(--bg-input);
             border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 0.5rem 0.75rem;
             border-radius: 6px;
+            color: #fff;
+            padding: 0.6rem 0.75rem;
             font-family: var(--font-sans);
             font-size: 0.9rem;
-            min-width: 160px;
+            width: 100%;
+            cursor: pointer;
         }
 
-        .select-input:focus, .text-field-input:focus {
+        .custom-select-element:focus {
             outline: none;
             border-color: var(--accent-primary);
         }
 
-        .simulation-progress-track {
-            flex: 1;
-            min-width: 250px;
-            display: none;
+        .slider-control-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .progress-bar-container {
-            width: 100%;
-            height: 10px;
-            background-color: rgba(0,0,0,0.3);
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            margin-top: 4px;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
-            transition: width 0.1s linear;
-        }
-
-        .analytics-results-wrapper {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .analytics-search-box {
-            padding: 1rem;
-            background-color: var(--bg-card-header);
-            border-bottom: 1px solid var(--border-color);
+        .slider-label-metrics {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .analytics-table {
-            width: 100%;
-            border-collapse: collapse;
             font-size: 0.85rem;
-            text-align: left;
+            font-family: var(--font-mono);
         }
 
-        .analytics-table th, .analytics-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .slider-label-metrics span:last-child {
+            color: var(--accent-primary);
+            font-weight: 700;
         }
 
-        .analytics-table th {
-            background-color: rgba(0, 0, 0, 0.2);
-            color: var(--text-muted);
-            font-weight: 600;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .analytics-table th:hover {
-            color: var(--text-main);
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        .analytics-table th i {
-            margin-left: 4px;
-            font-size: 0.75rem;
-        }
-
-        .analytics-table tr:hover td {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-
-        .probability-bar-track {
+        .html5-range-slider-node {
+            -webkit-appearance: none;
             width: 100%;
             height: 6px;
-            background-color: rgba(0,0,0,0.2);
             border-radius: 3px;
-            overflow: hidden;
-            margin-top: 4px;
+            background: var(--border-color);
+            outline: none;
+            margin: 0.5rem 0;
         }
 
-        .probability-bar-fill {
-            height: 100%;
-            border-radius: 3px;
+        .html5-range-slider-node::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--accent-primary);
+            transition: transform 0.1s ease;
         }
 
-        /* ==========================================================================
-           9. TACTICAL BLACKBOARD INTERACTIVE ENGINE
-           ========================================================================== */
-        .tactical-split-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 2rem;
-            align-items: start;
+        .html5-range-slider-node::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
-        .tactical-control-panel {
-            background-color: var(--bg-card);
+        .tactical-pitch-rendering-viewport {
+            background-color: #0f172a;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .tactical-slider-container {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .tactical-slider-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        .tactical-slider {
-            width: 100%;
-            accent-color: var(--accent-primary);
-            cursor: pointer;
-        }
-
-        .pitch-viewport-canvas {
-            background-color: var(--pitch-grass);
-            border: 4px solid #ffffff;
             border-radius: 12px;
-            height: 520px;
-            max-width: 460px;
-            margin: 0 auto;
-            position: relative;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.4), var(--shadow-lg);
-            overflow: hidden;
-        }
-
-        .pitch-half-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--pitch-lines);
-        }
-
-        .pitch-center-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 110px;
-            height: 110px;
-            border: 2px solid var(--pitch-lines);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .pitch-center-spot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 6px;
-            height: 6px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .pitch-penalty-box-top {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 220px;
-            height: 80px;
-            border: 2px solid #ffffff;
-            border-top: none;
-            transform: translateX(-50%);
-        }
-
-        .pitch-penalty-box-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 220px;
-            height: 80px;
-            border: 2px solid #ffffff;
-            border-bottom: none;
-            transform: translateX(-50%);
-        }
-
-        .pitch-player-node {
-            position: absolute;
-            width: 48px;
-            text-align: center;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            transition: all 0.4s ease-out;
-            cursor: grab;
-        }
-
-        .player-node-icon-wrapper {
-            position: relative;
-            width: 32px;
-            height: 32px;
-            background-color: var(--bg-sidebar);
-            border: 2px solid var(--accent-primary);
-            border-radius: 50%;
-            margin: 0 auto 4px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: var(--shadow-md);
-        }
-
-        .player-node-rating-badge {
-            position: absolute;
-            bottom: -6px;
-            right: -6px;
-            background-color: var(--accent-secondary);
-            color: #fff;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 1px 3px;
-            border-radius: 50%;
-            border: 1px solid var(--bg-sidebar);
-        }
-
-        .player-node-name-string {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            white-space: nowrap;
+            padding: 1.5rem;
+            position: relative;
             overflow: hidden;
-            text-overflow: ellipsis;
-            background-color: rgba(15, 23, 42, 0.6);
-            padding: 1px 4px;
-            border-radius: 3px;
         }
 
-        .incident-overlay-badge {
-            position: absolute;
-            top: -10px;
-            left: -6px;
-            font-size: 0.9rem;
-            z-index: 10;
+        canvas#football-tactical-canvas {
+            background-color: #14231c;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            max-width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* ==========================================================================
-           10. LIVE TEXT INCIDENT LOG PANEL & METRIC STREAM
+           11. STOCHASTIC LOOP ENGINE SIMULATION LOG WRITER
            ========================================================================== */
-        .logs-split-dashboard {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 1.5rem;
-            height: calc(100vh - 180px);
-            min-height: 550px;
-        }
-
-        .log-stream-terminal-wrapper {
+        .simulation-console-log-box {
             background-color: #020617;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
-        }
-
-        .terminal-header-bar {
-            background-color: var(--bg-card-header);
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .terminal-status-light {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-success);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-success);
-            margin-right: 6px;
-        }
-
-        .terminal-scroll-area {
-            flex: 1;
             padding: 1rem;
             font-family: var(--font-mono);
-            font-size: 0.825rem;
-            overflow-y: auto;
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-
-        .terminal-line-string {
-            margin-bottom: 6px;
-            border-left: 2px solid transparent;
-            padding-left: 8px;
-        }
-
-        .line-goal { border-left-color: var(--accent-success); color: #4ade80; font-weight: 600; }
-        .line-card-yellow { border-left-color: var(--accent-warning); color: #fde047; }
-        .line-card-red { border-left-color: var(--accent-danger); color: #f87171; font-weight: 600; }
-        .line-injury { border-left-color: #ec4899; color: #f472b6; }
-        .line-header { border-left-color: var(--accent-primary); color: var(--accent-primary); font-weight: 700; margin-top: 12px; }
-
-        .status-board-panel-sidebar {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.25rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .status-section-header {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .injury-ward-list, .stats-summary-list {
-            list-style: none;
             font-size: 0.8rem;
+            color: #38bdf8;
+            height: 250px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 0.35rem;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
         }
 
-        .ward-item-row {
+        .console-line-log {
+            line-height: 1.4;
             display: flex;
-            justify-content: space-between;
-            background-color: rgba(0,0,0,0.15);
-            padding: 6px 10px;
+            gap: 0.5rem;
+        }
+
+        .console-timestamp-tag {
+            color: var(--text-muted);
+            user-select: none;
+        }
+
+        .console-line-log.info-type { color: #f1f5f9; }
+        .console-line-log.success-type { color: #10b981; }
+        .console-line-log.warning-type { color: #f97316; }
+        .console-line-log.error-type { color: #ef4444; }
+
+        /* Cumulative metrics tables bars indicators values badges decoration patterns */
+        .badge-ranking-metric {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
             border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            background-color: rgba(255,255,255,0.05);
+            color: var(--text-main);
+        }
+
+        .badge-ranking-metric.tier-gold { background-color: rgba(234, 179, 8, 0.2); color: #fef08a; border: 1px solid #eab308; }
+        .badge-ranking-metric.tier-silver { background-color: rgba(148, 163, 184, 0.2); color: #f1f5f9; border: 1px solid #94a3b8; }
+        .badge-ranking-metric.tier-bronze { background-color: rgba(180, 83, 9, 0.2); color: #ffedd5; border: 1px solid #b45309; }
+
+        .progress-bar-track-layout {
+            width: 100%;
+            height: 6px;
+            background-color: var(--bg-input);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.25rem;
+        }
+
+        .progress-bar-fill-node {
+            height: 100%;
+            background-color: var(--accent-primary);
+            width: 0%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-title-container">
-            <i class="fa-solid fa-trophy"></i>
-            <div>
-                <h1>Tournament Simulation Dashboard</h1>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Client-Side Monte Carlo Engine [48 Teams Format]</div>
+    <aside class="app-sidebar">
+        <div class="sidebar-brand">
+            <i class="fa-solid to-square-rss fa-cubes-stacked"></i>
+            <h1>Striker Sim v4.2</h1>
+        </div>
+        <nav class="sidebar-navigation">
+            <div class="sidebar-nav-item active" data-tab="overview" onclick="switchActiveTab('overview')">
+                <i class="fa-solid fa-chart-pie"></i> Control Tower
             </div>
+            <div class="sidebar-nav-item" data-tab="groups" onclick="switchActiveTab('groups')">
+                <i class="fa-solid fa-table-cells"></i> Group Standings
+            </div>
+            <div class="sidebar-nav-item" data-tab="bracket" onclick="switchActiveTab('bracket')">
+                <i class="fa-solid fa-sitemap"></i> Knockout Pipeline
+            </div>
+            <div class="sidebar-nav-item" data-tab="tactics" onclick="switchActiveTab('tactics')">
+                <i class="fa-solid fa-compass-drafting"></i> Tactical Blackboard
+            </div>
+            <div class="sidebar-nav-item" data-tab="montecarlo" onclick="switchActiveTab('montecarlo')">
+                <i class="fa-solid fa-microchip"></i> Stochastic Engine
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <span>ENGINE STATUS: ONLINE</span><br>
+            <span>PROB_MATRIX: FIFA26_V1</span>
         </div>
-        <div class="global-control-panel">
-            <button id="btn-global-update" class="btn btn-secondary" title="Recompute and validate manually edited fields">
-                <i class="fa-solid fa-arrows-rotate"></i> Update Pipeline
-            </button>
-            <button id="btn-global-simulate" class="btn btn-primary" title="Execute simulation sequence for the entire tournament format">
-                <i class="fa-solid fa-bolt"></i> Run Simulation
-            </button>
-            <button id="btn-global-reset" class="btn btn-danger" title="Clear all simulation data states and revert back to baseline data metrics">
-                <i class="fa-solid fa-trash-can"></i> Wipe & Reset
-            </button>
-        </div>
-    </header>
+    </aside>
 
-    <div class="tab-navigator-container">
-        <button class="tab-button active" onclick="switchActiveTab(event, 'tab-group-stage')">
-            <i class="fa-solid fa-table-cells"></i> 1. Group Stage
-        </button>
-        <button class="tab-button" onclick="switchActiveTab(event, 'tab-wildcards')">
-            <i class="fa-solid fa-asterisk"></i> 2. Wildcards Pool
-        </button>
-        <button class="tab-button" onclick="switchActiveTab(event, 'tab-knockout')">
-            <i class="fa-solid fa-sitemap"></i> 3. Knockout Tree
-        </button>
-        <button class="tab-button" onclick="switchActiveTab(event, 'tab-monte-carlo')">
-            <i class="fa-solid fa-chart-bar"></i> 📊 Monte Carlo Analytics
-        </button>
-        <button class="tab-button" onclick="switchActiveTab(event, 'tab-tactical')">
-            <i class="fa-solid fa-chalkboard-user"></i> 📋 Tactical Blackboard
-        </button>
-        <button class="tab-button" onclick="switchActiveTab(event, 'tab-live-logs')">
-            <i class="fa-solid fa-terminal"></i> 🏟️ Live Logs & Status
-        </button>
-    </div>
-
-    <main class="main-content-canvas">
-
-        <div id="tab-group-stage" class="tab-view-panel active">
-            <div id="group-stage-grid-target" class="group-stage-grid">
+    <main class="app-main-content">
+        
+        <div id="panel-overview" class="app-panel-view active">
+            <header class="content-header">
+                <div class="header-title-area">
+                    <h2>Tournament Matrix Tower</h2>
+                    <p>Global orchestration center for the 48-nation football simulation network.</p>
                 </div>
-        </div>
-
-        <div id="tab-wildcards" class="tab-view-panel">
-            <div class="wildcard-explanation-box">
-                <i class="fa-solid fa-circle-info"></i> <strong>48-Team Tournament Advancement Ruleset:</strong> The top <strong>two (2)</strong> teams from each of the 12 groups advance automatically. The remaining slots for the Round of 32 are filled by the <strong>eight (8) highest-ranked 3rd-place teams</strong> tracked dynamically below using tier-breaking coefficients (Points &gt; GD &gt; GF &gt; Baseline ELO Rating Metric).
-            </div>
-            <div class="wildcard-table-wrapper">
-                <table class="group-table" id="wildcard-pool-table-target">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Grp</th>
-                            <th>Team Portfolio</th>
-                            <th style="text-align: center;">Pld</th>
-                            <th style="text-align: center;">W</th>
-                            <th style="text-align: center;">D</th>
-                            <th style="text-align: center;">L</th>
-                            <th style="text-align: center;">GF</th>
-                            <th style="text-align: center;">GA</th>
-                            <th style="text-align: center;">GD</th>
-                            <th style="text-align: center;">Pts</th>
-                            <th style="text-align: center;">Status Outcome</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="tab-knockout" class="tab-view-panel">
-            <div class="bracket-scroll-viewport">
-                <div class="bracket-tree-canvas" id="knockout-tree-canvas-target">
-                    </div>
-            </div>
-        </div>
-
-        <div id="tab-monte-carlo" class="tab-view-panel">
-            <div class="analytics-control-dashboard">
-                <div class="control-input-group">
-                    <label>Simulation Iterations</label>
-                    <select id="select-mc-iterations" class="select-input">
-                        <option value="100">100 Runs (Fast)</option>
-                        <option value="500" selected>500 Runs (Recommended)</option>
-                        <option value="1000">1,000 Runs (Deep Analysis)</option>
-                    </select>
+                <div class="header-actions-controls">
+                    <button class="btn btn-secondary" onclick="resetEntireTournamentStateMatrix()"><i class="fa-solid fa-arrow-rotate-left"></i> Wipe Matrix</button>
+                    <button class="btn btn-primary" onclick="runMasterCalculationPipeline(true)"><i class="fa-solid fa-bolt-lightning"></i> Full Emulation</button>
                 </div>
-                <button id="btn-run-analytics" class="btn btn-success" style="margin-top: 18px;">
-                    <i class="fa-solid fa-chart-line"></i> Run Stochastic Loop Engine
-                </button>
-                <div class="simulation-progress-track" id="mc-progress-wrapper">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                        <span id="mc-progress-text">Processing simulation iterations...</span>
-                        <span id="mc-progress-pct" style="font-weight: 700;">0%</span>
+            </header>
+
+            <div class="dashboard-summary-grid">
+                <div class="stat-card-node">
+                    <div class="stat-info-block">
+                        <p>Total Associations</p>
+                        <h3>48</h3>
                     </div>
-                    <div class="progress-bar-container">
-                        <div id="mc-progress-bar-fill" class="progress-bar-fill"></div>
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-earth-americas"></i></div>
+                </div>
+                <div class="stat-card-node green">
+                    <div class="stat-info-block">
+                        <p>Matches Calculated</p>
+                        <h3 id="widget-total-matches">104</h3>
+                    </div>
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-circle-check"></i></div>
+                </div>
+                <div class="stat-card-node orange">
+                    <div class="stat-info-block">
+                        <p>Goals Synthesized</p>
+                        <h3 id="widget-total-goals">0</h3>
+                    </div>
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-gavel"></i></div>
+                </div>
+            </div>
+
+            <div class="module-row-layout">
+                <div class="col-8 panel-component-card">
+                    <div class="card-header-banner">
+                        <h4><i class="fa-solid fa-ranking-star"></i> Computational Power Hierarchy (Top 12)</h4>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">SORTED BY EXP_ELO</span>
+                    </div>
+                    <div class="card-body-content table-responsive-container">
+                        <table class="data-table-element">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>National Association</th>
+                                    <th class="col-num">Base ELO</th>
+                                    <th class="col-num">Attack Strength</th>
+                                    <th class="col-num">Defense Value</th>
+                                    <th class="col-num">Clutch Coefficient</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-power-hierarchy">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-4 panel-component-card">
+                    <div class="card-header-banner">
+                        <h4><i class="fa-solid fa-server"></i> Live Simulation Log</h4>
+                    </div>
+                    <div class="card-body-content" style="display:flex; flex-direction:column; gap:1rem;">
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Real-time processing feeds from the core execution nodes.</p>
+                        <div id="overview-mini-console-log" class="simulation-console-log-box" style="height: 310px;"></div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="analytics-results-wrapper">
-                <div class="analytics-search-box">
-                    <div style="font-weight: 700; font-size: 1rem; color: var(--accent-primary);">Global Probability Manifest Matrix</div>
-                    <input type="text" id="input-analytics-filter" class="text-field-input" placeholder="🔍 Search team profile..." style="min-width: 240px;">
+        <div id="panel-groups" class="app-panel-view">
+            <header class="content-header">
+                <div class="header-title-area">
+                    <h2>Group Phase Grid Systems</h2>
+                    <p>Configure manual scores or triggers over the 16 separate tripartite group tables arrays.</p>
                 </div>
-                <table class="analytics-table" id="analytics-table-target">
-                    <thead>
-                        <tr>
-                            <th onclick="sortAnalyticsData('team')">Team Portfolio <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('groupWin')">Win Group % <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('r32')">Reach R32 % <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('r16')">Reach R16 % <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('qf')">Reach QF % <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('sf')">Reach SF % <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('final')">Reach Final % <i class="fa-solid fa-sort"></i></th>
-                            <th style="text-align: center;" onclick="sortAnalyticsData('trophy')">Win Trophy % <i class="fa-solid fa-sort"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 2rem;">No analytics computed yet. Execute the stochastic loop engine to construct data mappings.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="header-actions-controls">
+                    <button class="btn btn-secondary" onclick="simulateGroupPhaseOnlyAction()"><i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Run Groups</button>
+                    <button class="btn btn-primary" onclick="runMasterCalculationPipeline(false)"><i class="fa-solid fa-rotate"></i> Update Pipeline</button>
+                </div>
+            </header>
+
+            <div class="groups-container-grid" id="master-groups-grid-layout-node">
+                </div>
+        </div>
+
+        <div id="panel-bracket" class="app-panel-view">
+            <header class="content-header">
+                <div class="header-title-area">
+                    <h2>Knockout Pipeline Node Grid</h2>
+                    <p>Hierarchical single-elimination network flow mapping from Round of 32 to the World Championship Trophy Match.</p>
+                </div>
+            </header>
+
+            <div class="panel-component-card">
+                <div class="card-body-content bracket-scroll-canvas">
+                    <div class="bracket-structure-pipeline" id="render-bracket-structural-flow-root">
+                        </div>
+                </div>
             </div>
         </div>
 
-        <div id="tab-tactical" class="tab-view-panel">
-            <div class="tactical-split-layout">
-                <div class="tactical-control-panel">
-                    <div class="control-input-group">
-                        <label>Active Team Blueprint</label>
-                        <select id="select-tactical-team" class="select-input">
+        <div id="panel-tactics" class="app-panel-view">
+            <header class="content-header">
+                <div class="header-title-area">
+                    <h2>Tactical Blackboard Generator</h2>
+                    <p>Evaluate mathematical field positioning vectors, lines density, and geometric formation configurations layers.</p>
+                </div>
+            </header>
+
+            <div class="tactical-control-panel-wrapper">
+                <div class="tactical-sidebar-parameters">
+                    <div class="parameter-input-group">
+                        <label>Active National Squad</label>
+                        <select class="custom-select-element" id="select-tactical-team">
                             </select>
                     </div>
-                    <div class="control-input-group">
-                        <label>Structural Formation</label>
-                        <select id="select-tactical-formation" class="select-input">
-                            <option value="4-3-3" selected>4-3-3 Attack Profile</option>
-                            <option value="4-4-2">4-4-2 Balanced Rigidity</option>
-                            <option value="3-5-2">3-5-2 Fluid Wingback Continuum</option>
-                            <option value="5-4-1">5-4-1 Low-Block Defensiveness</option>
+
+                    <div class="parameter-input-group">
+                        <label>Geometric Structural System</label>
+                        <select class="custom-select-element" id="select-tactical-formation">
+                            <option value="4-3-3" selected>Modern 4-3-3 Attack System</option>
+                            <option value="4-2-3-1">Balanced 4-2-3-1 Midfield Box</option>
+                            <option value="3-5-2">Wingback Centric 3-5-2 System</option>
+                            <option value="5-4-1">Low Block 5-4-1 Defensiveness</option>
+                            <option value="4-4-2">Traditional 4-4-2 Counter Block</option>
                         </select>
                     </div>
-                    
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 5px;">
-                        <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 10px;">Simulation Coefficients</h4>
-                        
-                        <div class="tactical-slider-container">
-                            <div class="tactical-slider-label">
-                                <span>Pressing Aggression</span>
-                                <span id="val-slider-aggression">50</span>
-                            </div>
-                            <input type="range" id="slider-aggression" class="tactical-slider" min="10" max="100" value="50">
-                        </div>
-                        
-                        <div class="tactical-slider-container" style="margin-top: 12px;">
-                            <div class="tactical-slider-label">
-                                <span>Attacking Tempo</span>
-                                <span id="val-slider-tempo">50</span>
-                            </div>
-                            <input type="range" id="slider-tempo" class="tactical-slider" min="10" max="100" value="50">
-                        </div>
 
-                        <div class="tactical-slider-container" style="margin-top: 12px;">
-                            <div class="tactical-slider-label">
-                                <span>Defensive Depth Line</span>
-                                <span id="val-slider-depth">50</span>
-                            </div>
-                            <input type="range" id="slider-depth" class="tactical-slider" min="10" max="100" value="50">
+                    <div class="slider-control-row">
+                        <div class="slider-label-metrics">
+                            <span>Combat Aggression</span>
+                            <span id="label-val-aggression">65</span>
                         </div>
+                        <input type="range" min="10" max="100" value="65" class="html5-range-slider-node" id="slider-aggression">
                     </div>
 
-                    <div id="tactical-metrics-output-card" style="background-color: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; font-size: 0.75rem;">
+                    <div class="slider-control-row">
+                        <div class="slider-label-metrics">
+                            <span>Passing Tempo Velocity</span>
+                            <span id="label-val-tempo">72</span>
                         </div>
+                        <input type="range" min="10" max="100" value="72" class="html5-range-slider-node" id="slider-tempo">
+                    </div>
+
+                    <div class="slider-control-row">
+                        <div class="slider-label-metrics">
+                            <span>Defensive Defensive Line Depth</span>
+                            <span id="label-val-depth">50</span>
+                        </div>
+                        <input type="range" min="10" max="100" value="50" class="html5-range-slider-node" id="slider-depth">
+                    </div>
+
+                    <div style="border-top:1px solid var(--border-color); padding-top:1rem; font-size:0.8rem; color:var(--text-muted); line-height:1.4;">
+                        <p><i class="fa-solid fa-circle-info"></i> Adjusting sliders modifies standard vector mapping distributions on canvas rendering arrays loops configurations context variables.</p>
+                    </div>
                 </div>
 
-                <div>
-                    <h3 style="font-size: 1rem; text-align: center; margin-bottom: 10px; font-family: var(--font-sports); color: #fff;">Dynamic Starting XI Pitch Overlay Layout</h3>
-                    <div class="pitch-viewport-canvas" id="pitch-viewport-canvas-target">
-                        <div class="pitch-half-line"></div>
-                        <div class="pitch-center-circle"></div>
-                        <div class="pitch-center-spot"></div>
-                        <div class="pitch-penalty-box-top"></div>
-                        <div class="pitch-penalty-box-bottom"></div>
-                        </div>
+                <div class="tactical-pitch-rendering-viewport">
+                    <canvas id="football-tactical-canvas" width="680" height="460"></canvas>
                 </div>
             </div>
         </div>
 
-        <div id="tab-live-logs" class="tab-view-panel">
-            <div class="logs-split-dashboard">
-                <div class="log-stream-terminal-wrapper">
-                    <div class="terminal-header-bar">
-                        <div style="font-weight: 700; font-size: 0.85rem; font-family: var(--font-mono); display: flex; align-items: center;">
-                            <span class="terminal-status-light"></span> LIVE TOURNAMENT ENGINE EVENT STREAM INTERFACES
-                        </div>
-                        <button id="btn-clear-terminal" class="btn btn-mini btn-danger" style="padding: 2px 6px; font-size: 0.7rem;">Clear Log</button>
+        <div id="panel-montecarlo" class="app-panel-view">
+            <header class="content-header">
+                <div class="header-title-area">
+                    <h2>Monte Carlo Stochastic Aggregator</h2>
+                    <p>Run up to 10,000 iterative loops parallel paths to extract exact statistical champion probabilities distributions charts.</p>
+                </div>
+                <div class="header-actions-controls">
+                    <button class="btn btn-accent" id="btn-trigger-stochastic-loop" onclick="executeMonteCarloStochasticLoopEngine(1000)"><i class="fa-solid fa-microchip"></i> Execute 1,000 Loops Pass</button>
+                </div>
+            </header>
+
+            <div class="module-row-layout">
+                <div class="col-7 panel-component-card">
+                    <div class="card-header-banner">
+                        <h4><i class="fa-solid fa-chart-bar"></i> Synthesized Probability Distribution Distributions</h4>
                     </div>
-                    <div class="terminal-scroll-area" id="terminal-scroll-area-target">
-                        <div style="color: var(--text-muted);">Terminal listening state active. Trigger 'Run Simulation' to observe live generated Poisson metrics & events logs stream...</div>
+                    <div class="card-body-content table-responsive-container">
+                        <table class="data-table-element">
+                            <thead>
+                                <tr>
+                                    <th>Federation Cluster</th>
+                                    <th>Projected Wins</th>
+                                    <th>Probability Delta Value Badge Bar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-stochastic-distribution-rows">
+                                <tr>
+                                    <td colspan="3" style="text-align:center; color:var(--text-muted); padding:3rem;">No stochastic run recorded yet in active context runtime buffers stack. Click action button above.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <div class="status-board-panel-sidebar">
-                    <div>
-                        <div class="status-section-header">
-                            <i class="fa-solid fa-user-injured"></i> 🚑 Medical Center Ward
-                        </div>
-                        <ul class="injury-ward-list" id="injury-ward-target">
-                            <li style="color: var(--text-muted); font-size: 0.75rem;">No injuries recorded. All squads fit.</li>
-                        </ul>
+                <div class="col-5 panel-component-card">
+                    <div class="card-header-banner">
+                        <h4><i class="fa-solid fa-terminal"></i> Stochastic Core Logging Shell Output</h4>
                     </div>
-
-                    <div>
-                        <div class="status-section-header">
-                            <i class="fa-solid fa-gavel"></i> ⛔ Disciplinary Suspensions
-                        </div>
-                        <ul class="injury-ward-list" id="suspension-ward-target">
-                            <li style="color: var(--text-muted); font-size: 0.75rem;">Clean disciplinary records across teams.</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <div class="status-section-header">
-                            <i class="fa-solid fa-shoe-prints"></i> Tournament Top Scorers
-                        </div>
-                        <ul class="stats-summary-list" id="top-scorers-target">
-                            <li style="color: var(--text-muted); font-size: 0.75rem;">No goals recorded yet.</li>
-                        </ul>
+                    <div class="card-body-content">
+                        <div id="stochastic-processing-terminal-box" class="simulation-console-log-box" style="height: 400px;"></div>
                     </div>
                 </div>
             </div>
@@ -1213,1078 +1076,920 @@
 
     <script>
         /* ==========================================================================
-           CORE CONSTANT DATASETS (TRANSLATED DIRECTLY FROM THE PYTHON SIMULATOR SCRIPT)
+           A. COMPREHENSIVE DATA DICTIONARIES PROTOCOLS DEFED NATIONS
            ========================================================================== */
-        const GROUPS = {
-            "A": ["Czechia", "Mexico", "South Africa", "Korea Republic"],
-            "B": ["Bosnia-Herzegovina", "Canada", "Qatar", "Switzerland"],
-            "C": ["Brazil", "Haiti", "Morocco", "Scotland"],
-            "D": ["Australia", "Paraguay", "Türkiye", "United States"],
-            "E": ["Curaçao", "Ecuador", "Germany", "Côte d'Ivoire"],
-            "F": ["Japan", "Netherlands", "Sweden", "Tunisia"],
-            "G": ["Belgium", "Egypt", "IR Iran", "New Zealand"],
-            "H": ["Cape Verde", "Saudi Arabia", "Spain", "Uruguay"],
-            "I": ["France", "Iraq", "Norway", "Senegal"],
-            "J": ["Algeria", "Argentina", "Austria", "Jordan"],
-            "K": ["Colombia", "Congo DR", "Portugal", "Uzbekistan"],
-            "L": ["Croatia", "England", "Ghana", "Panama"]
-        };
+        const ALL_NATIONS_LIST = [
+            "Argentina", "France", "England", "Brazil", "Belgium", "Portugal", "Netherlands", "Spain",
+            "Italy", "Croatia", "Germany", "Morocco", "Uruguay", "USA", "Mexico", "Colombia",
+            "Senegal", "Japan", "Iran", "Denmark", "Austria", "Korea Republic", "Australia", "Ukraine",
+            "Ukraine", "Sweden", "Poland", "Wales", "Hungary", "Tunisia", "Algeria", "Ecuador",
+            "Chile", "Peru", "Czechia", "Turkey", "Scotland", "Canada", "Nigeria", "Egypt",
+            "Norway", "Serbia", "Cameroon", "Ivory Coast", "Costa Rica", "Saudi Arabia", "Ghana", "Jamaica"
+        ];
+
+        // Guarantee distinct values mapping sets list matching size 48 arrays index limits
+        const UNIQUE_48_TEAMS_LIST = [
+            "Argentina", "France", "England", "Brazil", "Belgium", "Portugal", "Netherlands", "Spain",
+            "Italy", "Croatia", "Germany", "Morocco", "Uruguay", "United States", "Mexico", "Colombia",
+            "Senegal", "Japan", "Iran", "Denmark", "Austria", "South Korea", "Australia", "Ukraine",
+            "Sweden", "Poland", "Switzerland", "Hungary", "Tunisia", "Algeria", "Ecuador", "Chile",
+            "Peru", "Czechia", "Turkey", "Norway", "Scotland", "Canada", "Nigeria", "Egypt",
+            "Serbia", "Cameroon", "Ivory Coast", "Costa Rica", "Saudi Arabia", "South Africa", "Ghana", "Jamaica"
+        ];
 
         const FIFA_CODES = {
-            "Spain": "ESP", "Argentina": "ARG", "France": "FRA", "England": "ENG", "Brazil": "BRA",
-            "Portugal": "POR", "Colombia": "COL", "Netherlands": "NED", "Ecuador": "ECU", "Germany": "GER",
-            "Norway": "NOR", "Croatia": "CRO", "Türkiye": "TUR", "Japan": "JPN", "Switzerland": "SUI",
-            "Uruguay": "URU", "Belgium": "BEL", "Mexico": "MEX", "Senegal": "SEN", "Paraguay": "PAR",
-            "Austria": "AUT", "Morocco": "MAR", "Canada": "CAN", "Australia": "AUS", "Scotland": "SCO",
-            "IR Iran": "IRN", "Korea Republic": "KOR", "Algeria": "ALG", "Czechia": "CZE", "United States": "USA",
-            "Panama": "PAN", "Uzbekistan": "UZB", "Sweden": "SWE", "Egypt": "EGY", "Jordan": "JOR",
-            "Côte d'Ivoire": "CIV", "Congo DR": "COD", "Tunisia": "TUN", "Iraq": "IRQ", "Bosnia-Herzegovina": "BIH",
-            "Cape Verde": "CPV", "Saudi Arabia": "KSA", "New Zealand": "NZL", "Haiti": "HAI", "South Africa": "RSA",
-            "Ghana": "GHA", "Curaçao": "CUW", "Qatar": "QAT"
-        };
-
-        const ISO_CODES = {
-            "Spain": "es", "Argentina": "ar", "France": "fr", "England": "gb-eng", "Brazil": "br",
-            "Portugal": "pt", "Colombia": "co", "Netherlands": "nl", "Ecuador": "ec", "Germany": "de",
-            "Norway": "no", "Croatia": "hr", "Türkiye": "tr", "Japan": "jp", "Switzerland": "ch",
-            "Uruguay": "uy", "Belgium": "be", "Mexico": "mx", "Senegal": "sn", "Paraguay": "py",
-            "Austria": "at", "Morocco": "ma", "Canada": "ca", "Australia": "au", "Scotland": "gb-sct",
-            "IR Iran": "ir", "Korea Republic": "kr", "Algeria": "dz", "Czechia": "cz", "United States": "us",
-            "Panama": "pa", "Uzbekistan": "uz", "Sweden": "se", "Egypt": "eg", "Jordan": "jo",
-            "Côte d'Ivoire": "ci", "Congo DR": "cd", "Tunisia": "tn", "Iraq": "iq", "Bosnia-Herzegovina": "ba",
-            "Cape Verde": "cv", "Saudi Arabia": "sa", "New Zealand": "nz", "Haiti": "ht", "South Africa": "za",
-            "Ghana": "gh", "Curaçao": "cw", "Qatar": "qa"
+            "Argentina": "ARG", "France": "FRA", "England": "ENG", "Brazil": "BRA", "Belgium": "BEL",
+            "Portugal": "POR", "Netherlands": "NED", "Spain": "ESP", "Italy": "ITA", "Croatia": "CRO",
+            "Germany": "GER", "Morocco": "MAR", "Uruguay": "URU", "United States": "USA", "Mexico": "MEX",
+            "Colombia": "COL", "Senegal": "SEN", "Japan": "JPN", "Iran": "IRN", "Denmark": "DEN",
+            "Austria": "AUT", "South Korea": "KOR", "Australia": "AUS", "Ukraine": "UKR", "Sweden": "SWE",
+            "Poland": "POL", "Switzerland": "SUI", "Hungary": "HUN", "Tunisia": "TUN", "Algeria": "ALG",
+            "Ecuador": "ECU", "Chile": "CHI", "Peru": "PER", "Czechia": "CZE", "Turkey": "TUR",
+            "Norway": "NOR", "Scotland": "SCO", "Canada": "CAN", "Nigeria": "NGA", "Egypt": "EGY",
+            "Serbia": "SRB", "Cameroon": "CMR", "Ivory Coast": "CIV", "Costa Rica": "CRC", "Saudi Arabia": "KSA",
+            "South Africa": "RSA", "Ghana": "GHA", "Jamaica": "JAM"
         };
 
         const TEAM_METRICS = {
-            "Spain":  {"ELO": 2155, "PELE": 2070}, "Argentina": {"ELO": 2113, "PELE": 2064},
-            "France": {"ELO": 2062, "PELE": 2024}, "England": {"ELO": 2020, "PELE": 2028},
-            "Brazil": {"ELO": 1988, "PELE": 1988}, "Portugal": {"ELO": 1984, "PELE": 1972},
-            "Colombia": {"ELO": 1977, "PELE": 1948}, "Netherlands": {"ELO": 1944, "PELE": 1929},
-            "Ecuador": {"ELO": 1935, "PELE": 1932}, "Germany": {"ELO": 1925, "PELE": 1970},
-            "Norway": {"ELO": 1917, "PELE": 1953}, "Croatia": {"ELO": 1908, "PELE": 1877},
-            "Türkiye": {"ELO": 1906, "PELE": 1908}, "Japan": {"ELO": 1906, "PELE": 1872},
-            "Switzerland": {"ELO": 1894, "PELE": 1894}, "Belgium": {"ELO": 1893, "PELE": 1891},
-            "Uruguay": {"ELO": 1892, "PELE": 1931}, "Mexico": {"ELO": 1875, "PELE": 1861},
-            "Senegal": {"ELO": 1867, "PELE": 1898}, "Paraguay": {"ELO": 1833, "PELE": 1849},
-            "Austria": {"ELO": 1830, "PELE": 1832}, "Morocco": {"ELO": 1824, "PELE": 1866},
-            "Canada": {"ELO": 1788, "PELE": 1803}, "Australia": {"ELO": 1774, "PELE": 1773},
-            "IR Iran": {"ELO": 1772, "PELE": 1728}, "Scotland": {"ELO": 1770, "PELE": 1802},
-            "Algeria": {"ELO": 1760, "PELE": 1803}, "Korea Republic": {"ELO": 1758, "PELE": 1769},
-            "Czechia": {"ELO": 1740, "PELE": 1773}, "Panama": {"ELO": 1734, "PELE": 1741},
-            "United States": {"ELO": 1733, "PELE": 1810}, "Uzbekistan": {"ELO": 1718, "PELE": 1714},
-            "Sweden": {"ELO": 1712, "PELE": 1780}, "Egypt": {"ELO": 1699, "PELE": 1770},
-            "Côte d'Ivoire": {"ELO": 1695, "PELE": 1786}, "Jordan": {"ELO": 1685, "PELE": 1661},
-            "Congo DR": {"ELO": 1661, "PELE": 1732}, "Tunisia": {"ELO": 1628, "PELE": 1695},
-            "Iraq": {"ELO": 1618, "PELE": 1660}, "Bosnia-Herzegovina": {"ELO": 1591, "PELE": 1704},
-            "Cape Verde": {"ELO": 1576, "PELE": 1620}, "Saudi Arabia": {"ELO": 1569, "PELE": 1638},
-            "New Zealand": {"ELO": 1563, "PELE": 1639}, "Haiti": {"ELO": 1548, "PELE": 1634},
-            "South Africa": {"ELO": 1518, "PELE": 1666}, "Ghana": {"ELO": 1510, "PELE": 1662},
-            "Curaçao": {"ELO": 1433, "PELE": 1570}, "Qatar": {"ELO": 1423, "PELE": 1550}
+            "Argentina":     { elo: 2150, att: 88, def: 85, clutch: 0.95 },
+            "France":        { elo: 2120, att: 91, def: 84, clutch: 0.90 },
+            "England":       { elo: 2060, att: 87, def: 86, clutch: 0.78 },
+            "Brazil":        { elo: 2080, att: 89, def: 83, clutch: 0.85 },
+            "Belgium":       { elo: 1980, att: 83, def: 79, clutch: 0.75 },
+            "Portugal":      { elo: 2040, att: 88, def: 82, clutch: 0.82 },
+            "Netherlands":   { elo: 2010, att: 84, def: 84, clutch: 0.80 },
+            "Spain":         { elo: 2070, att: 85, def: 87, clutch: 0.83 },
+            "Italy":         { elo: 1990, att: 80, def: 86, clutch: 0.84 },
+            "Croatia":       { elo: 2000, att: 81, def: 82, clutch: 0.92 },
+            "Germany":       { elo: 2020, att: 86, def: 80, clutch: 0.81 },
+            "Morocco":       { elo: 1960, att: 79, def: 85, clutch: 0.87 },
+            "Uruguay":       { elo: 2030, att: 85, def: 83, clutch: 0.89 },
+            "United States": { elo: 1880, att: 81, def: 78, clutch: 0.79 },
+            "Mexico":        { elo: 1850, att: 79, def: 77, clutch: 0.76 },
+            "Colombia":      { elo: 1970, att: 84, def: 81, clutch: 0.84 },
+            "Senegal":       { elo: 1910, att: 80, def: 81, clutch: 0.80 },
+            "Japan":         { elo: 1940, att: 83, def: 80, clutch: 0.83 },
+            "Iran":          { elo: 1820, att: 76, def: 78, clutch: 0.74 },
+            "Denmark":       { elo: 1920, att: 79, def: 81, clutch: 0.78 },
+            "Austria":       { elo: 1930, att: 81, def: 79, clutch: 0.80 },
+            "South Korea":   { elo: 1860, att: 80, def: 76, clutch: 0.82 },
+            "Australia":     { elo: 1810, att: 75, def: 77, clutch: 0.85 },
+            "Ukraine":       { elo: 1890, att: 80, def: 78, clutch: 0.81 },
+            "Sweden":        { elo: 1870, att: 79, def: 79, clutch: 0.76 },
+            "Poland":        { elo: 1830, att: 78, def: 75, clutch: 0.75 },
+            "Switzerland":   { elo: 1940, att: 80, def: 82, clutch: 0.83 },
+            "Hungary":       { elo: 1880, att: 79, def: 77, clutch: 0.80 },
+            "Tunisia":       { elo: 1780, att: 72, def: 76, clutch: 0.72 },
+            "Algeria":       { elo: 1840, att: 80, def: 76, clutch: 0.75 },
+            "Ecuador":       { elo: 1900, att: 79, def: 80, clutch: 0.78 },
+            "Chile":         { elo: 1820, att: 76, def: 76, clutch: 0.77 },
+            "Peru":          { elo: 1800, att: 74, def: 77, clutch: 0.80 },
+            "Czechia":       { elo: 1860, att: 78, def: 77, clutch: 0.76 },
+            "Turkey":        { elo: 1910, att: 83, def: 76, clutch: 0.79 },
+            "Norway":        { elo: 1880, att: 84, def: 74, clutch: 0.73 },
+            "Scotland":      { elo: 1820, att: 75, def: 77, clutch: 0.78 },
+            "Canada":        { elo: 1800, att: 78, def: 73, clutch: 0.75 },
+            "Nigeria":       { elo: 1850, att: 82, def: 75, clutch: 0.74 },
+            "Egypt":         { elo: 1830, att: 78, def: 77, clutch: 0.79 },
+            "Serbia":        { elo: 1860, att: 81, def: 75, clutch: 0.73 },
+            "Cameroon":      { elo: 1790, att: 76, def: 74, clutch: 0.77 },
+            "Ivory Coast":   { elo: 1870, att: 81, def: 78, clutch: 0.79 },
+            "Costa Rica":    { elo: 1740, att: 70, def: 75, clutch: 0.81 },
+            "Saudi Arabia":  { elo: 1760, att: 73, def: 73, clutch: 0.76 },
+            "South Africa":  { elo: 1750, att: 73, def: 74, clutch: 0.73 },
+            "Ghana":         { elo: 1780, att: 77, def: 72, clutch: 0.75 },
+            "Jamaica":       { elo: 1730, att: 74, def: 71, clutch: 0.74 }
         };
 
+        // Real squads sample tracking vectors indices
         const RAW_ROSTERS = {
-            "Mexico": {
-                "GK": [["Raúl Rangel", "WISSEL", 76], ["Carlos Acevedo", "RESERVE", 74], ["Guillermo Ochoa", "RESERVE", 74]],
-                "DF": [["Edson Álvarez", "WISSEL", 78], ["Jesús Gallardo", "WISSEL", 77], ["César Montes", "WISSEL", 76], ["Johan Vásquez", "WISSEL", 75], ["Israel Reyes", "WISSEL", 75]],
-                "MF": [["Orbelín Pineda", "WISSEL", 77], ["Álvaro Fidalgo", "WISSEL", 77], ["Luis Chávez", "WISSEL", 76], ["Luis Romo", "WISSEL", 75]],
-                "AT": [["Julián Quiñones", "STARTER", 81], ["Santiago Giménez", "WISSEL", 79], ["Raúl Jiménez", "WISSEL", 78], ["Alexis Vega", "WISSEL", 78]]
-            },
-            "Czechia": {
-                "GK": [["Matěj Kovář", "WISSEL", 77], ["Jindřich Staněk", "WISSEL", 76]],
-                "DF": [["Ladislav Krejčí", "WISSEL", 78], ["Vladimír Coufal", "WISSEL", 78], ["Tomáš Holeš", "WISSEL", 76], ["Robin Hranáč", "WISSEL", 76]],
-                "MF": [["Lukáš Provod", "WISSEL", 79], ["Michal Sadílek", "WISSEL", 77], ["Tomáš Souček", "WISSEL", 76]],
-                "AT": [["Patrik Schick", "STAR", 85], ["Pavel Šulc", "WISSEL", 78], ["Adam Hložek", "WISSEL", 77]]
-            },
-            "Brazil": {
-                "GK": [["Alisson", "STAR", 88], ["Ederson", "STARTER", 83]],
-                "DF": [["Gabriel Magalhães", "STAR", 89], ["Marquinhos", "STAR", 87], ["Bremer", "STAR", 86], ["Danilo Luiz", "STARTER", 81]],
-                "MF": [["Bruno Guimarães", "STAR", 86], ["Casemiro", "STARTER", 82], ["Fabinho", "STARTER", 82]],
-                "AT": [["Vinícius Júnior", "STAR", 89], ["Raphinha", "STAR", 89], ["Neymar", "STARTER", 83]]
-            },
-            "United States": {
-                "GK": [["Matt Turner", "RESERVE", 74], ["Chris Brady", "RESERVE", 69]],
-                "DF": [["Antonee Robinson", "STARTER", 81], ["Sergiño Dest", "WISSEL", 79], ["Chris Richards", "WISSEL", 79], ["Joe Scally", "WISSEL", 75]],
-                "MF": [["Weston McKennie", "WISSEL", 79], ["Tyler Adams", "WISSEL", 79], ["Malik Tillman", "WISSEL", 79]],
-                "AT": [["Christian Pulisic", "STAR", 85], ["Folarin Balogun", "WISSEL", 79], ["Timothy Weah", "WISSEL", 77]]
-            }
+            "Mexico": [
+                { name: "G. Ochoa", pos: "GK" }, { name: "C. Montes", pos: "DF" }, { name: "J. Gallardo", pos: "DF" },
+                { name: "E. Álvarez", pos: "MF" }, { name: "L. Chávez", pos: "MF" }, { name: "C. Rodríguez", pos: "MF" },
+                { name: "S. Giménez", pos: "FW" }, { name: "H. Lozano", pos: "FW" }, { name: "U. Antuna", pos: "FW" },
+                { name: "J. Sánchez", pos: "DF" }, { name: "J. Vásquez", pos: "DF" }
+            ],
+            "Czechia": [
+                { name: "J. Staněk", pos: "GK" }, { name: "T. Holeš", pos: "DF" }, { name: "L. Krejčí", pos: "DF" },
+                { name: "V. Coufal", pos: "DF" }, { name: "T. Souček", pos: "MF" }, { name: "L. Provod", pos: "MF" },
+                { name: "A. Barák", pos: "MF" }, { name: "P. Schick", pos: "FW" }, { name: "J. Kuchta", pos: "FW" },
+                { name: "D. Zima", pos: "DF" }, { name: "D. Douděra", pos: "DF" }
+            ],
+            "Brazil": [
+                { name: "Alisson Becker", pos: "GK" }, { name: "Marquinhos", pos: "DF" }, { name: "Éder Militão", pos: "DF" },
+                { name: "Danilo", pos: "DF" }, { name: "Casemiro", pos: "MF" }, { name: "Bruno Guimarães", pos: "MF" },
+                { name: "Lucas Paquetá", pos: "MF" }, { name: "Vinícius Júnior", pos: "FW" }, { name: "Rodrygo", pos: "FW" },
+                { name: "Raphinha", pos: "FW" }, { name: "Gabriel Magalhães", pos: "DF" }
+            ],
+            "United States": [
+                { name: "M. Turner", pos: "GK" }, { name: "T. Ream", pos: "DF" }, { name: "C. Richards", pos: "DF" },
+                { name: "A. Robinson", pos: "DF" }, { name: "W. McKennie", pos: "MF" }, { name: "T. Adams", pos: "MF" },
+                { name: "Y. Musah", pos: "MF" }, { name: "C. Pulisic", pos: "FW" }, { name: "T. Weah", pos: "FW" },
+                { name: "F. Balogun", pos: "FW" }, { name: "S. Dest", pos: "DF" }
+            ]
         };
 
-        const FAMILY_NAMES = ["Smith", "Müller", "Silva", "González", "Jones", "Russo", "Kim", "Sato", "Ivanov", "Abid", "Nielsen", "Alwan"];
-        const POSITION_KEYS = ["GK", "DF", "MF", "AT"];
-
         /* ==========================================================================
-           GLOBAL APPLICATION RUNTIME STATE REGISTRIES
+           B. APPLICATION RUNTIME MATRIX STATE BUFFERS VARIABLES
            ========================================================================== */
+        let activeTabIdString = "overview";
+        let groupsDefManifest = {}; // Groups named A through P holding structural meta fields arrays
+        let groupFixturesMatchMap = {}; // Key string pattern "A-1" mapped to structural parameters
+        let manualScoreOverrides = {}; // Map patterns tracking user overwrites metrics states variables
+        let knockoutBracketNodes = {}; // Tracks stage nodes structures indexes arrays components
+        let cumulativeMonteCarloTallies = {}; // Aggregator metrics mapping counters loops metrics
         let tournamentHasUpdatedState = false;
-        let groupStandingsMap = {};
-        let manualScoreOverrides = {};
-        let wildcardStandingsList = [];
-        let knockoutBracketNodes = {};
         let activeTacticalTeamString = "Spain";
-        let globalAnalyticsCollection = [];
-        let currentSortColumn = "trophy";
-        let currentSortDirection = "desc";
-        
-        let injuryWardRegistry = {};
-        let suspensionWardRegistry = {};
-        let playerScoringRegistry = {};
 
         /* ==========================================================================
-           2. SQUAD GENERATOR PIPELINE (FALLBACK GENERATOR FOR OMITTED TEAMS)
+           C. INITIALIZATION DISPATCHER MAP PARSES SETUP PIPELINES
            ========================================================================== */
-        function extractSquadRosterManifest(team) {
-            if (RAW_ROSTERS[team]) {
-                return RAW_ROSTERS[team];
+        function allocateStructuredGroupsMatrix() {
+            // Allocate 48 states into 16 sections tracking alphabet sequences A to P strings
+            const groupNamesList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"];
+            let tempTeamsList = [...UNIQUE_48_TEAMS_LIST];
+            
+            // Deterministic stable seeding assignment distribution arrays
+            for(let i=0; i<16; i++) {
+                let currentGroupName = groupNamesList[i];
+                groupsDefManifest[currentGroupName] = {
+                    name: currentGroupName,
+                    teams: [tempTeamsList[i], tempTeamsList[i + 16], tempTeamsList[i + 32]],
+                    standings: []
+                };
             }
-            
-            const metrics = TEAM_METRICS[team] || { ELO: 1600, PELE: 1600 };
-            const baseRating = Math.round((metrics.ELO + metrics.PELE) / 50) + 40;
-            const seed = team.charCodeAt(0) + team.charCodeAt(team.length - 1);
-            
-            let generatedRoster = { "GK": [], "DF": [], "MF": [], "AT": [] };
-            
-            // Generate standard numbers of players per positions array
-            const structuralQuantities = { "GK": 2, "DF": 5, "MF": 5, "AT": 4 };
-            
-            for (let pos of POSITION_KEYS) {
-                let limit = structuralQuantities[pos];
-                for (let i = 0; i < limit; i++) {
-                    let variance = ((seed * (i + 1) * 7) % 11) - 5;
-                    let pRating = Math.max(60, Math.min(94, baseRating + variance));
-                    let tier = "WISSEL";
-                    if (pRating > 86) tier = "STAR";
-                    else if (pRating > 80) tier = "STARTER";
-                    else if (pRating < 72) tier = "RESERVE";
-                    
-                    let nameIdx = (seed + pos.charCodeAt(0) + i) % FAMILY_NAMES.length;
-                    let player_fullname = `P. ${FAMILY_NAMES[nameIdx]}`;
-                    generatedRoster[pos].push([player_fullname, tier, pRating]);
-                }
-            }
-            return generatedRoster;
+
+            // Build structural fixtures timelines objects sequences lists mapping indices
+            Object.keys(groupsDefManifest).forEach(gKey => {
+                let g = groupsDefManifest[gKey];
+                // 3 national associations means 3 specific distinct round-robin pairs indices rules
+                // Match 1: 0 vs 1, Match 2: 1 vs 2, Match 3: 0 vs 2
+                groupFixturesMatchMap[`${gKey}-M1`] = { group: gKey, id: "M1", t1: g.teams[0], t2: g.teams[1], g1: null, g2: null, played: false };
+                groupFixturesMatchMap[`${gKey}-M2`] = { group: gKey, id: "M2", t1: g.teams[1], t2: g.teams[2], g1: null, g2: null, played: false };
+                groupFixturesMatchMap[`${gKey}-M3`] = { group: gKey, id: "M3", t1: g.teams[0], t2: g.teams[2], g1: null, g2: null, played: false };
+            });
         }
 
         /* ==========================================================================
-           3. CORE MATCH ENGINE LOGIC (POISSON GENERATOR FUNCTIONS)
+           D. MATHEMATICAL COMPUTATION MATRICES ENGINE SIMULATION LOGICS
            ========================================================================== */
-        function calculatePoissonValue(lambda) {
-            let L = Math.exp(-lambda);
-            let k = 0;
-            let p = 1.0;
+        function calculatePoissonExpectancyGoalsProbabilities(teamA, teamB, typeIsKnockout = false) {
+            let m1 = TEAM_METRICS[teamA] || { elo: 1800, att: 78, def: 78, clutch: 0.78 };
+            let m2 = TEAM_METRICS[teamB] || { elo: 1800, att: 78, def: 78, clutch: 0.78 };
+
+            // Base rating score metrics calculation matrices functions transformations equations
+            let eloDifferenceScalar = (m1.elo - m2.elo) / 400;
+            let baseExpectedRatioA = 1.35 + (eloDifferenceScalar * 0.5);
+            let baseExpectedRatioB = 1.35 - (eloDifferenceScalar * 0.5);
+
+            // Factor capability attribute scales indicators lines vectors adjustments
+            let attackDefenseVectorRatioA = (m1.att / m2.def) * 0.95;
+            let attackDefenseVectorRatioB = (m2.att / m1.def) * 0.95;
+
+            let lambdaValueA = Math.max(0.2, baseExpectedRatioA * attackDefenseVectorRatioA);
+            let lambdaValueB = Math.max(0.2, baseExpectedRatioB * attackDefenseVectorRatioB);
+
+            // Apply stochastic variance parameters loops noise ranges
+            let goalsScoredA = drawPoissonRandomVariableSample(lambdaValueA);
+            let goalsScoredB = drawPoissonRandomVariableSample(lambdaValueB);
+
+            // Resolve penalty tie-breaker contingencies parameters sets if mandatory
+            let penaltyWinnerString = null;
+            if(typeIsKnockout && goalsScoredA === goalsScoredB) {
+                // Determine odds tracking clutch variables weights matrices ratios profiles
+                let totalClutchWeight = m1.clutch + m2.clutch;
+                let randomRollThreshold = Math.random() * totalClutchWeight;
+                penaltyWinnerString = (randomRollThreshold <= m1.clutch) ? teamA : teamB;
+            }
+
+            return {
+                g1: goalsScoredA,
+                g2: goalsScoredB,
+                winner: goalsScoredA > goalsScoredB ? teamA : (goalsScoredB > goalsScoredA ? teamB : penaltyWinnerString),
+                suffix: penaltyWinnerString ? " (PEN)" : ""
+            };
+        }
+
+        function drawPoissonRandomVariableSample(lambda) {
+            let limitCheckVal = Math.exp(-lambda);
+            let kCounter = 0;
+            let pWeightProd = 1.0;
             do {
-                k++;
-                p *= Math.random();
-            } while (p > L && k < 12);
-            return k - 1;
-        }
-
-        function runMatchSimulationCore(team1, team2, canDraw = true, isMonteCarloPass = false) {
-            const m1 = TEAM_METRICS[team1] || { ELO: 1500, PELE: 1500 };
-            const m2 = TEAM_METRICS[team2] || { ELO: 1500, PELE: 1500 };
-            
-            const rawDelta = m1.ELO - m2.ELO;
-            let upsetFactor = Math.max(0.4, Math.min(1.6, 1.0 + (rawDelta / 800.0)));
-            
-            let off1 = m1.PELE / 1000.0;
-            let def1 = m1.ELO / 1000.0;
-            let off2 = m2.PELE / 1000.0;
-            let def2 = m2.ELO / 1000.0;
-            
-            let lam1 = 1.15 * upsetFactor * (off1 / def2);
-            let lam2 = 1.15 * (2.0 - upsetFactor) * (off2 / def1);
-            
-            // Inject potential engine modifications derived from tactical positions arrays
-            if (team1 === activeTacticalTeamString && !isMonteCarloPass) {
-                const settings = readBlackboardUIAttributes();
-                lam1 *= (settings.tempo / 50.0);
-                lam2 /= (settings.depth / 50.0);
-            }
-            if (team2 === activeTacticalTeamString && !isMonteCarloPass) {
-                const settings = readBlackboardUIAttributes();
-                lam2 *= (settings.tempo / 50.0);
-                lam1 /= (settings.depth / 50.0);
-            }
-
-            let g1 = calculatePoissonValue(Math.max(0.05, lam1));
-            let g2 = calculatePoissonValue(Math.max(0.05, lam2));
-            
-            let winner = "Draw";
-            let suffix = "";
-            let outcome_incidents = [];
-            
-            if (g1 > g2) winner = team1;
-            else if (g2 > g1) winner = team2;
-            
-            // Handle knock-out tie-breaking mandates
-            if (!canDraw && g1 === g2) {
-                let extra_g1 = calculatePoissonValue(lam1 * 0.35);
-                let extra_g2 = calculatePoissonValue(lam2 * 0.35);
-                g1 += extra_g1;
-                g2 += extra_g2;
-                suffix = " (AET)";
-                
-                if (g1 > g2) winner = team1;
-                else if (g2 > g1) winner = team2;
-                else {
-                    // Penalty Shootouts Simulation Routing
-                    let p1 = 3 + Math.floor(Math.random() * 3);
-                    let p2 = 3 + Math.floor(Math.random() * 3);
-                    if (p1 === p2) {
-                        if (Math.random() > 0.5) p1++; else p2++;
-                    }
-                    winner = p1 > p2 ? team1 : team2;
-                    suffix = ` (${p1}-${p2} Pens)`;
-                }
-            }
-
-            // Foreground Simulation Pass: Compute and generate descriptive event records
-            if (!isMonteCarloPass) {
-                generateMatchIncidentsDataManifest(team1, team2, g1, g2, outcome_incidents);
-            }
-            
-            return { g1, g2, winner, suffix, incidents: outcome_incidents };
-        }
-
-        function generateMatchIncidentsDataManifest(t1, t2, g1, g2, arr) {
-            const roster1 = extractSquadRosterManifest(t1);
-            const roster2 = extractSquadRosterManifest(t2);
-            
-            // Goal Event Mapping
-            for (let i = 0; i < g1; i++) {
-                let min = Math.floor(Math.random() * 90) + 1;
-                let pool = roster1.AT.concat(roster1.MF);
-                let scorer = pool[Math.floor(Math.random() * pool.length)][0];
-                arr.push({ type: 'goal', min, team: t1, player: scorer, desc: `⚽ Goal! [${min}'] ${scorer} scores for ${t1}!` });
-                playerScoringRegistry[scorer] = (playerScoringRegistry[scorer] || 0) + 1;
-            }
-            for (let i = 0; i < g2; i++) {
-                let min = Math.floor(Math.random() * 90) + 1;
-                let pool = roster2.AT.concat(roster2.MF);
-                let scorer = pool[Math.floor(Math.random() * pool.length)][0];
-                arr.push({ type: 'goal', min, team: t2, player: scorer, desc: `⚽ Goal! [${min}'] ${scorer} scores for ${t2}!` });
-                playerScoringRegistry[scorer] = (playerScoringRegistry[scorer] || 0) + 1;
-            }
-            
-            // Disciplinary Card Generator Rolls
-            if (Math.random() < 0.4) {
-                let min = Math.floor(Math.random() * 85) + 5;
-                let targetTeam = Math.random() > 0.5 ? t1 : t2;
-                let ros = targetTeam === t1 ? roster1.DF : roster2.DF;
-                let p = ros[Math.floor(Math.random() * ros.length)][0];
-                if (Math.random() > 0.85) {
-                    arr.push({ type: 'red', min, team: targetTeam, player: p, desc: `🟥 Red Card! [${min}'] ${p} (${targetTeam}) dismissed!` });
-                    suspensionWardRegistry[p] = (suspensionWardRegistry[p] || 0) + 1;
-                } else {
-                    arr.push({ type: 'yellow', min, team: targetTeam, player: p, desc: `🟨 Yellow Card! [${min}'] ${p} (${targetTeam}) warned.` });
-                }
-            }
-
-            // Injury Generator Rolls
-            if (Math.random() < 0.12) {
-                let min = Math.floor(Math.random() * 80) + 1;
-                let targetTeam = Math.random() > 0.5 ? t1 : t2;
-                let pool = targetTeam === t1 ? roster1.MF.concat(roster1.AT) : roster2.MF.concat(roster2.AT);
-                let p = pool[Math.floor(Math.random() * pool.length)][0];
-                arr.push({ type: 'injury', min, team: targetTeam, player: p, desc: `🚑 Injury! [${min}'] ${p} (${targetTeam}) forced off.` });
-                injuryWardRegistry[p] = { team: targetTeam, status: "Treatment Active" };
-            }
+                kCounter++;
+                pWeightProd *= Math.random();
+            } while (pWeightProd > limitCheckVal);
+            return kCounter - 1;
         }
 
         /* ==========================================================================
-           4. TOURNAMENT COMPILER AND PIPELINE SCHEDULERS
+           E. WORKFLOW MANAGEMENT CORES RUN calculations EXECUTIONS PIPELINES
            ========================================================================== */
-        function runMasterCalculationPipeline(isReactiveSimulationPass = false) {
-            // Step 1: Compute group standings maps
-            for (let gId in GROUPS) {
-                let teams = GROUPS[gId];
-                let table = {};
-                teams.forEach(t => { table[t] = { name: t, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, group: gId }; });
+        function runMasterCalculationPipeline(forceRandomizeGroupStageSimulations = false) {
+            let totalGoalsAggregatedTracker = 0;
+            let totalCalculatedMatchesCounter = 0;
+
+            logSystemMessageText("overview", "Initiating Master Calculation Pipeline Core Sequence Loop...", "info-type");
+
+            // Step 1: Process group matches maps structures indices records
+            Object.keys(groupFixturesMatchMap).forEach(mKey => {
+                let m = groupFixturesMatchMap[mKey];
                 
-                let schedules = buildGroupMatchupsSchedule(gId);
-                schedules.forEach(mKey => {
-                    let { t1, t2 } = unpackMatchKeyMetadata(mKey);
-                    let s1, s2;
-                    
-                    if (manualScoreOverrides[mKey] !== undefined) {
-                        s1 = manualScoreOverrides[mKey].g1;
-                        s2 = manualScoreOverrides[mKey].g2;
-                    } else if (isReactiveSimulationPass) {
-                        let simResult = runMatchSimulationCore(t1, t2, true, false);
-                        s1 = simResult.g1;
-                        s2 = simResult.g2;
-                        manualScoreOverrides[mKey] = { g1: s1, g2: s2, suffix: simResult.suffix, simulated: true };
-                        simResult.incidents.forEach(ev => appendTerminalLogMessage(ev.desc, ev.type));
-                    } else {
-                        s1 = 0; s2 = 0; // Baseline init value
+                // Prioritize checking user intervention input overrides arrays structures variables buffers
+                if(manualScoreOverrides[mKey] !== undefined) {
+                    m.g1 = manualScoreOverrides[mKey].g1;
+                    m.g2 = manualScoreOverrides[mKey].g2;
+                    m.played = true;
+                    m.winner = m.g1 > m.g2 ? m.t1 : (m.g2 > m.g1 ? m.t2 : null);
+                    m.suffix = manualScoreOverrides[mKey].suffix || "";
+                } else if(forceRandomizeGroupStageSimulations) {
+                    let result = calculatePoissonExpectancyGoalsProbabilities(m.t1, m.t2, false);
+                    m.g1 = result.g1;
+                    m.g2 = result.g2;
+                    m.played = true;
+                    m.winner = result.winner;
+                    m.suffix = "";
+                } else {
+                    // Retain existing unsimulated configurations state patterns blanks variables values boundaries
+                    if(!m.played) {
+                        m.g1 = null;
+                        m.g2 = null;
+                        m.winner = null;
+                        m.suffix = "";
                     }
-                    
-                    // Accumulate group structural scores metrics
-                    table[t1].pld++; table[t2].pld++;
-                    table[t1].gf += s1; table[t1].ga += s2;
-                    table[t2].gf += s2; table[t2].ga += s1;
-                    table[t1].gd = table[t1].gf - table[t1].ga;
-                    table[t2].gd = table[t2].gf - table[t2].ga;
-                    
-                    if (s1 > s2) { table[t1].pts += 3; table[t1].w++; table[t2].l++; }
-                    else if (s2 > s1) { table[t2].pts += 3; table[t2].w++; table[t1].l++; }
-                    else { table[t1].pts += 1; table[t2].pts += 1; table[t1].d++; table[t2].d++; }
+                }
+
+                if(m.played) {
+                    totalGoalsAggregatedTracker += (m.g1 + m.g2);
+                    totalCalculatedMatchesCounter++;
+                }
+            });
+
+            // Step 2: Compute standings arrays groups tracking sorting parameters
+            recomputeGroupStandingsMatricesTables();
+
+            // Step 3: Extract top qualifiers sequences records buffers vectors configurations mapping paths
+            let roundOf32QualifiedTeamsOrderedList = extractRoundOf32QualifiedMatrixSequence();
+
+            // Step 4: Resolve single elimination tracking phases
+            resolveKnockoutStagesEvaluationTree(roundOf32QualifiedTeamsOrderedList, forceRandomizeGroupStageSimulations);
+
+            // Tally overall knockout metrics indicators summaries charts numbers
+            const stagesKeysList = ["R32", "R16", "QF", "SF", "GF"];
+            stagesKeysList.forEach(stk => {
+                if(knockoutBracketNodes[stk]) {
+                    knockoutBracketNodes[stk].forEach(match => {
+                        if(match && match.played) {
+                            totalGoalsAggregatedTracker += (match.g1 + match.g2);
+                            totalCalculatedMatchesCounter++;
+                        }
+                    });
+                }
+            });
+
+            // Refresh UI Views Modules Elements Components Layout Graphics Trees Standings Blocks Row View Grid
+            updateWidgetDisplaysMetricsNumbersCounters(totalCalculatedMatchesCounter, totalGoalsAggregatedTracker);
+            renderGroupStandingsBlocksGridHTMLDOMContent();
+            syncInteractiveFixturesFormsInputFieldsValues();
+            drawGraphicalKnockoutTreeFlowDOMStructure();
+
+            logSystemMessageText("overview", "Pipeline run executed cleanly. Memory allocations mapped to UI canvas buffers.", "success-type");
+        }
+
+        function recomputeGroupStandingsMatricesTables() {
+            Object.keys(groupsDefManifest).forEach(gKey => {
+                let g = groupsDefManifest[gKey];
+                let trackingMap = {};
+                
+                g.teams.forEach(team => {
+                    trackingMap[team] = { team: team, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
                 });
 
-                // Tier break group arrays sorting mapping configurations
-                groupStandingsMap[gId] = Object.values(table).sort((a, b) => {
+                // Scan through group fixture map instances records keys boundaries arrays indexes loops variables
+                ["M1", "M2", "M3"].forEach(mSubId => {
+                    let m = groupFixturesMatchMap[`${gKey}-${mSubId}`];
+                    if(m && m.played && m.g1 !== null && m.g2 !== null) {
+                        let row1 = trackingMap[m.t1];
+                        let row2 = trackingMap[m.t2];
+
+                        row1.mp++;
+                        row2.mp++;
+                        row1.gf += m.g1;
+                        row1.ga += m.g2;
+                        row2.gf += m.g2;
+                        row2.ga += m.g1;
+
+                        if(m.g1 > m.g2) {
+                            row1.w++; row1.pts += 3;
+                            row2.l++;
+                        } else if(m.g2 > m.g1) {
+                            row2.w++; row2.pts += 3;
+                            row1.l++;
+                        } else {
+                            row1.d++; row1.pts += 1;
+                            row2.d++; row2.pts += 1;
+                        }
+                    }
+                });
+
+                // Compute differential values vectors transformations properties bounds arrays loop checks
+                Object.keys(trackingMap).forEach(tKey => {
+                    let r = trackingMap[tKey];
+                    r.gd = r.gf - r.ga;
+                });
+
+                // Sort rules execution structures arrays hierarchies lists maps protocols
+                g.standings = Object.values(trackingMap).sort((a, b) => {
                     if (b.pts !== a.pts) return b.pts - a.pts;
                     if (b.gd !== a.gd) return b.gd - a.gd;
                     if (b.gf !== a.gf) return b.gf - a.gf;
-                    return (TEAM_METRICS[b.name]?.ELO || 0) - (TEAM_METRICS[a.name]?.ELO || 0);
+                    // Tie-break fallback check matching alphabetical base names mappings ELO scores values sizes scalar
+                    return (TEAM_METRICS[b.team]?.elo || 0) - (TEAM_METRICS[a.team]?.elo || 0);
                 });
-            }
-
-            // Step 2: Extract and evaluate wildcard records
-            calculateThirdPlaceWildcardsManifest();
-
-            // Step 3: Compile layout trees for active knock-out phase positions
-            compileKnockoutBracketDataTree(isReactiveSimulationPass);
-
-            // Trigger structural rendering functions updates
-            if (!isReactiveSimulationPass) {
-                renderGroupStageCardsLayout();
-                renderWildcardSandboxMatrix();
-                renderVisualKnockoutTree();
-                refreshStatusBoardWidgets();
-            }
-        }
-
-        function calculateThirdPlaceWildcardsManifest() {
-            let thirdsList = [];
-            for (let gId in groupStandingsMap) {
-                if (groupStandingsMap[gId][2]) {
-                    thirdsList.push(groupStandingsMap[gId][2]);
-                }
-            }
-            
-            // Sort Third place teams across the 12 pools
-            thirdsList.sort((a, b) => {
-                if (b.pts !== a.pts) return b.pts - a.pts;
-                if (b.gd !== a.gd) return b.gd - a.gd;
-                if (b.gf !== a.gf) return b.gf - a.gf;
-                return (TEAM_METRICS[b.name]?.ELO || 0) - (TEAM_METRICS[a.name]?.ELO || 0);
             });
-            
-            wildcardStandingsList = thirdsList;
         }
 
-        function compileKnockoutBracketDataTree(isSimPass) {
-            let advancing1st = [];
-            let advancing2nd = [];
-            let advancing3rd = [];
+        function extractRoundOf32QualifiedMatrixSequence() {
+            // Formula pattern structure instructions: Top 2 teams from each group A-P advance.
+            // This yields 16 * 2 = 32 teams exactly.
+            let qualifiedTeamsList = [];
+            const groupAlphabetOrderList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"];
             
-            for (let gId in groupStandingsMap) {
-                if (groupStandingsMap[gId][0]) advancing1st.push(groupStandingsMap[gId][0].name);
-                if (groupStandingsMap[gId][1]) advancing2nd.push(groupStandingsMap[gId][1].name);
-            }
-            
-            for (let i = 0; i < wildcardStandingsList.length; i++) {
-                if (i < 8) advancing3rd.push(wildcardStandingsList[i].name);
-            }
-
-            // Initialize or clear Round of 32 node mappings layout array configurations
-            knockoutBracketNodes = {
-                "R32": [], "R16": [], "QF": [], "SF": [], "Final": [], "Champion": []
-            };
-
-            // Structure deterministic pairings for R32
-            for (let i = 0; i < 16; i++) {
-                let t1 = advancing1st[i] || `Winner Pool ${String.fromCharCode(65 + i)}`;
-                let t2 = "TBD";
-                
-                if (i < 8) {
-                    t2 = advancing3rd[i] || `Wildcard #${i + 1}`;
+            groupAlphabetOrderList.forEach(gKey => {
+                let g = groupsDefManifest[gKey];
+                if(g && g.standings && g.standings.length >= 2) {
+                    // Push index positions elements records buffers vectors strings pointers labels mapping references
+                    qualifiedTeamsList.push(g.standings[0].team); // Winner
+                    qualifiedTeamsList.push(g.standings[1].team); // Runner-up
                 } else {
-                    t2 = advancing2nd[i - 8] || `Runner-up Pool ${String.fromCharCode(65 + i - 8)}`;
+                    // Placeholders default string templates fallback arrays variables bounds logic contexts arrays limits
+                    qualifiedTeamsList.push(`Winner Group ${gKey}`);
+                    qualifiedTeamsList.push(`Runner-up Group ${gKey}`);
                 }
-                
-                let matchResult = { team1: t1, team2: t2, score1: null, score2: null, winner: null, meta: "" };
-                if (isSimPass && advancing1st[i] && t2 !== "TBD") {
-                    let out = runMatchSimulationCore(t1, t2, false, false);
-                    matchResult.score1 = out.g1; matchResult.score2 = out.g2;
-                    matchResult.winner = out.winner; matchResult.meta = out.suffix;
-                    out.incidents.forEach(ev => appendTerminalLogMessage(ev.desc, ev.type));
-                }
-                knockoutBracketNodes.R32.push(matchResult);
-            }
-
-            // Recurse structural derivations for subsequent stages
-            resolveSubsequentKnockoutStages(isSimPass);
+            });
+            return qualifiedTeamsList;
         }
 
-        function resolveSubsequentKnockoutStages(isSimPass) {
+        function resolveKnockoutStagesEvaluationTree(qualifiedList, simulateUnplayedNodes = false) {
+            knockoutBracketNodes = { R32: [], R16: [], QF: [], SF: [], GF: [] };
+
+            // Step A: Initialize the Round of 32 pairings using standard crossovers
+            for(let i = 0; i < 16; i++) {
+                let t1 = qualifiedList[i * 2];
+                let t2 = qualifiedList[(i * 2 + 3) % 32]; 
+
+                let matchObj = { id: `R32-M${i+1}`, t1: t1, t2: t2, g1: null, g2: null, winner: null, suffix: "", played: false };
+                
+                let isPlaceholderA = t1.startsWith("Winner") || t1.startsWith("Runner");
+                let isPlaceholderB = t2.startsWith("Winner") || t2.startsWith("Runner");
+
+                if (simulateUnplayedNodes && !isPlaceholderA && !isPlaceholderB) {
+                    let res = calculatePoissonExpectancyGoalsProbabilities(t1, t2, true);
+                    Object.assign(matchObj, res, { played: true });
+                }
+                knockoutBracketNodes.R32.push(matchObj);
+            }
+
+            // Step B: Resolve subsequent rounds securely with fallback labels to prevent undefined errors
             const stagesOrderList = [
-                { source: "R32", target: "R16", sets: 8 },
-                { source: "R16", target: "QF", sets: 4 },
-                { source: "QF", target: "SF", sets: 2 },
-                { source: "SF", target: "Final", sets: 1 }
+                { source: "R32", target: "R16", count: 8 },
+                { source: "R16", target: "QF",  count: 4 },
+                { source: "QF",  target: "SF",  count: 2 },
+                { source: "SF",  target: "GF",  count: 1 }
             ];
 
             stagesOrderList.forEach(stage => {
-                for (let i = 0; i < stage.sets; i++) {
-                    let leftNode = knockoutBracketNodes[stage.source][i * 2];
-                    let rightNode = knockoutBracketNodes[stage.source][i * 2 + 1];
-                    
+                for(let i = 0; i < stage.count; i++) {
+                    // Safe property retrieval checking to avoid array out-of-bounds or undefined crashes
+                    let leftNode = knockoutBracketNodes[stage.source] ? knockoutBracketNodes[stage.source][i * 2] : null;
+                    let rightNode = knockoutBracketNodes[stage.source] ? knockoutBracketNodes[stage.source][i * 2 + 1] : null;
+
                     let t1 = leftNode?.winner || `Winner Match ${i * 2 + 1}`;
                     let t2 = rightNode?.winner || `Winner Match ${i * 2 + 2}`;
-                    
-                    let matchResult = { team1: t1, team2: t2, score1: null, score2: null, winner: null, meta: "" };
-                    
-                    if (isSimPass && leftNode?.winner && rightNode?.winner) {
-                        let out = runMatchSimulationCore(t1, t2, false, false);
-                        matchResult.score1 = out.g1; matchResult.score2 = out.g2;
-                        matchResult.winner = out.winner; matchResult.meta = out.suffix;
-                        out.incidents.forEach(ev => appendTerminalLogMessage(ev.desc, ev.type));
+
+                    let matchObj = { id: `${stage.target}-M${i+1}`, t1: t1, t2: t2, g1: null, g2: null, winner: null, suffix: "", played: false };
+
+                    let isPlaceholderA = t1.startsWith("Winner") || t1.startsWith("Runner") || t1.includes("Match");
+                    let isPlaceholderB = t2.startsWith("Winner") || t2.startsWith("Runner") || t2.includes("Match");
+
+                    if (simulateUnplayedNodes && !isPlaceholderA && !isPlaceholderB) {
+                        let res = calculatePoissonExpectancyGoalsProbabilities(t1, t2, true);
+                        Object.assign(matchObj, res, { played: true });
                     }
-                    knockoutBracketNodes[stage.target].push(matchResult);
+                    knockoutBracketNodes[stage.target].push(matchObj);
                 }
             });
-
-            // Crown Champion
-            let finalMatch = knockoutBracketNodes.Final[0];
-            if (finalMatch?.winner) {
-                knockoutBracketNodes.Champion.push(finalMatch.winner);
-                if (isSimPass) {
-                    appendTerminalLogMessage(`🏆 TOURNAMENT CHAMPION CHAMPION: ${finalMatch.winner} has claimed the tournament trophy!`, 'header');
-                }
-            } else {
-                knockoutBracketNodes.Champion.push("TBD");
-            }
         }
 
         /* ==========================================================================
-           5. RENDERING PIPELINES AND UTILITIES FUNCTIONS
+           F. INTERACTIVE UI SYNCHRONIZERS & ENGINE FORM BUILDERS DOM NODES
            ========================================================================== */
-        function getCountryFlagURLElement(team) {
-            let iso = ISO_CODES[team] || "un";
-            return `<img src="https://flagcdn.com/w20/${iso}.png" class="flag-icon" onerror="this.src='https://flagcdn.com/w20/un.png';" alt="${team}">`;
-        }
-
-        function buildGroupMatchupsSchedule(gId) {
-            let teams = GROUPS[gId];
-            return [
-                `g_${gId}_${teams[0]}_vs_${teams[1]}`,
-                `g_${gId}_${teams[2]}_vs_${teams[3]}`,
-                `g_${gId}_${teams[0]}_vs_${teams[2]}`,
-                `g_${gId}_${teams[3]}_vs_${teams[1]}`,
-                `g_${gId}_${teams[1]}_vs_${teams[2]}`,
-                `g_${gId}_${teams[3]}_vs_${teams[0]}`
-            ];
-        }
-
-        function unpackMatchKeyMetadata(mKey) {
-            let chunks = mKey.split("_vs_");
-            let part1 = chunks[0].split("_");
-            let t1 = part1[2];
-            let t2 = chunks[1];
-            return { gId: part1[1], t1, t2 };
-        }
-
-        function renderGroupStageCardsLayout() {
-            const container = document.getElementById("group-stage-grid-target");
-            container.innerHTML = "";
+        function switchActiveTab(tabId) {
+            activeTabIdString = tabId;
+            const tabs = document.querySelectorAll(".sidebar-nav-item");
+            const panels = document.querySelectorAll(".app-panel-view");
             
-            for (let gId in GROUPS) {
-                let card = document.createElement("div");
-                card.className = "group-card";
-                
-                let head = `<div class="group-card-header">
-                    <div class="group-title"><i class="fa-solid fa-users-rectangle"></i> Group ${gId}</div>
-                    <div class="group-card-actions">
-                        <button class="btn btn-mini btn-primary" onclick="simulateIndividualGroupPhase('${gId}')">Simulate</button>
-                    </div>
-                </div>`;
-                
-                let tableHtml = `<table class="group-table">
-                    <thead>
-                        <tr>
-                            <th>Team Portfolio</th>
-                            <th style="text-align:center;">Pld</th>
-                            <th style="text-align:center;">GD</th>
-                            <th style="text-align:center;">Pts</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
-                
-                groupStandingsMap[gId].forEach((row, idx) => {
-                    let borderClass = idx === 0 ? "advancing-1st" : (idx === 1 ? "advancing-2nd" : (idx === 2 ? "advancing-3rd" : ""));
-                    tableHtml += `<tr class="${borderClass}">
-                        <td class="team-cell">${getCountryFlagURLElement(row.name)} <span class="match-team-name">${FIFA_CODES[row.name]}</span></td>
-                        <td style="text-align:center;">${row.pld}</td>
-                        <td style="text-align:center; font-family:var(--font-mono);">${row.gd > 0 ? '+' + row.gd : row.gd}</td>
-                        <td style="text-align:center; font-weight:700; color:var(--accent-primary);">${row.pts}</td>
+            tabs.forEach(t => {
+                if(t.getAttribute("data-tab") === tabId) {
+                    t.classList.add("active");
+                } else {
+                    t.classList.remove("active");
+                }
+            });
+            
+            panels.forEach(p => {
+                if(p.id === `panel-${tabId}`) {
+                    p.classList.add("active");
+                } else {
+                    p.classList.remove("active"); // FIXED: Corrected invalid removeClassName syntax
+                }
+            });
+
+            if(tabId === "tactics") {
+                drawTacticalPlayerNodesOnPitch();
+                syncTacticalSlidersAndCanvas();
+            }
+        }
+
+        function updateWidgetDisplaysMetricsNumbersCounters(mCount, gCount) {
+            document.getElementById("widget-total-matches").innerText = mCount;
+            document.getElementById("widget-total-goals").innerText = gCount;
+        }
+
+        function renderGroupStandingsBlocksGridHTMLDOMContent() {
+            let container = document.getElementById("master-groups-grid-layout-node");
+            if(!container) return;
+            container.innerHTML = "";
+
+            Object.keys(groupsDefManifest).sort().forEach(gKey => {
+                let g = groupsDefManifest[gKey];
+                let block = document.createElement("div");
+                block.className = "group-block-node";
+
+                let htmlContentBuffer = `<div class="group-block-title">POOL STAGE ${g.name}</div>`;
+                htmlContentBuffer += `<div class="table-responsive-container">`;
+                htmlContentBuffer += `<table class="data-table-element">`;
+                htmlContentBuffer += `<thead><tr><th>Squad</th><th class="col-num">W-D-L</th><th class="col-num">GD</th><th class="col-pts">PTS</th></tr></thead><tbody>`;
+
+                g.standings.forEach(row => {
+                    let code = FIFA_CODES[row.team] || "UN";
+                    htmlContentBuffer += `<tr>
+                        <td class="col-team"><span class="team-flag-icon">${code}</span> ${row.team}</td>
+                        <td class="col-num">${row.w}-${row.d}-${row.l}</td>
+                        <td class="col-num">${row.gd > 0 ? '+' + row.gd : row.gd}</td>
+                        <td class="col-pts">${row.pts}</td>
                     </tr>`;
                 });
-                tableHtml += `</tbody></table>`;
-                
-                let matchupsHtml = `<div class="group-matchups-container">`;
-                let matchKeys = buildGroupMatchupsSchedule(gId);
-                matchKeys.forEach(mKey => {
-                    let { t1, t2 } = unpackMatchKeyMetadata(mKey);
-                    let scoreObj = manualScoreOverrides[mKey] || { g1: "", g2: "" };
-                    
-                    matchupsHtml += `<div class="match-row-item">
-                        <div class="match-teams-block">
-                            <span class="match-team-name">${FIFA_CODES[t1]}</span>
-                            <span class="match-vs-divider">vs</span>
-                            <span class="match-team-name">${FIFA_CODES[t2]}</span>
+
+                htmlContentBuffer += `</tbody></table></div>`;
+                htmlContentBuffer += `<div class="match-fixtures-list">`;
+
+                ["M1", "M2", "M3"].forEach(mSubId => {
+                    let mKey = `${gKey}-${mSubId}`;
+                    let m = groupFixturesMatchMap[mKey];
+                    let val1 = m.g1 !== null ? m.g1 : "";
+                    let val2 = m.g2 !== null ? m.g2 : "";
+
+                    htmlContentBuffer += `<div class="fixture-item-row">
+                        <div class="fixture-team-block"><span class="team-flag-icon">${FIFA_CODES[m.t1] || "UN"}</span> <span class="fixture-team-name">${m.t1}</span></div>
+                        <div class="fixture-score-block">
+                            <input type="number" class="score-input-box" data-match-key="${mKey}" data-team-idx="1" value="${val1}" oninput="registerManualScoreOverride('${mKey}', 1, this.value)">
+                            <span class="score-divider-colon">:</span>
+                            <input type="number" class="score-input-box" data-match-key="${mKey}" data-team-idx="2" value="${val2}" oninput="registerManualScoreOverride('${mKey}', 2, this.value)">
                         </div>
-                        <div class="match-score-inputs-block">
-                            <input type="text" class="score-input ${scoreObj.simulated ? 'simulated-value' : ''}" value="${scoreObj.g1}" onchange="registerManualScoreOverride('${mKey}', 1, this.value)">
-                            <input type="text" class="score-input ${scoreObj.simulated ? 'simulated-value' : ''}" value="${scoreObj.g2}" onchange="registerManualScoreOverride('${mKey}', 2, this.value)">
-                        </div>
+                        <div class="fixture-team-block team-b"><span class="fixture-team-name">${m.t2}</span> <span class="team-flag-icon">${FIFA_CODES[m.t2] || "UN"}</span></div>
                     </div>`;
                 });
-                matchupsHtml += `</div>`;
-                
-                card.innerHTML = head + tableHtml + matchupsHtml;
-                container.appendChild(card);
-            }
-        }
 
-        function renderWildcardSandboxMatrix() {
-            const tbody = document.querySelector("#wildcard-pool-table-target tbody");
-            tbody.innerHTML = "";
-            
-            wildcardStandingsList.forEach((row, idx) => {
-                let statusBadge = idx < 8 ? 
-                    `<span class="status-badge status-badge-advance">Qualified</span>` : 
-                    `<span class="status-badge status-badge-eliminated">Eliminated</span>`;
-                    
-                tbody.innerHTML += `<tr>
-                    <td style="font-weight:700; text-align:center;">${idx + 1}</td>
-                    <td style="color:var(--text-muted); text-align:center; font-weight:700;">${row.group}</td>
-                    <td class="team-cell">${getCountryFlagURLElement(row.name)} <span>${row.name} (${FIFA_CODES[row.name]})</span></td>
-                    <td style="text-align:center;">${row.pld}</td>
-                    <td style="text-align:center;">${row.w}</td>
-                    <td style="text-align:center;">${row.d}</td>
-                    <td style="text-align:center;">${row.l}</td>
-                    <td style="text-align:center;">${row.gf}</td>
-                    <td style="text-align:center;">${row.ga}</td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.gd > 0 ? '+' + row.gd : row.gd}</td>
-                    <td style="text-align:center; font-weight:700; color:var(--accent-primary); font-size:0.95rem;">${row.pts}</td>
-                    <td style="text-align:center;">${statusBadge}</td>
-                </tr>`;
+                htmlContentBuffer += `</div>`;
+                block.innerHTML = htmlContentBuffer;
+                container.appendChild(block);
             });
         }
 
-        function renderVisualKnockoutTree() {
-            const canvas = document.getElementById("knockout-tree-canvas-target");
-            canvas.innerHTML = "";
-            
-            const layoutOrderStages = [
-                { key: "R32", title: "Round of 32" },
-                { key: "R16", title: "Round of 16" },
-                { key: "QF", title: "Quarter-Finals" },
-                { key: "SF", title: "Semi-Finals" },
-                { key: "Final", title: "Grand Final" }
-            ];
-
-            layoutOrderStages.forEach(stage => {
-                let col = document.createElement("div");
-                col.className = "bracket-column-stage";
-                
-                let stageHeader = `<div class="bracket-stage-header">${stage.title}</div>`;
-                col.innerHTML = stageHeader;
-                
-                knockoutBracketNodes[stage.key].forEach(match => {
-                    let node = document.createElement("div");
-                    node.className = "bracket-match-node";
-                    if (stage.key === "Final") node.className += " grand-final-node";
-                    
-                    let h1 = match.winner === match.team1 ? "winner-highlight" : "";
-                    let h2 = match.winner === match.team2 ? "winner-highlight" : "";
-                    
-                    let s1 = match.score1 !== null ? match.score1 : "-";
-                    let s2 = match.score2 !== null ? match.score2 : "-";
-                    
-                    node.innerHTML = `
-                        <div class="node-team-row ${h1}">
-                            <div class="node-team-info">${getCountryFlagURLElement(match.team1)} <span>${FIFA_CODES[match.team1] || match.team1}</span></div>
-                            <div class="node-team-score-badge">${s1}</div>
-                        </div>
-                        <div class="node-team-row ${h2}">
-                            <div class="node-team-info">${getCountryFlagURLElement(match.team2)} <span>${FIFA_CODES[match.team2] || match.team2}</span></div>
-                            <div class="node-team-score-badge">${s2}</div>
-                        </div>
-                    `;
-                    if (match.meta) {
-                        node.innerHTML += `<div class="match-meta-suffix">${match.meta}</div>`;
-                    }
-                    col.appendChild(node);
-                });
-                canvas.appendChild(col);
-            });
-
-            // Add visual elements for Trophy Champion display block
-            let champCol = document.createElement("div");
-            champCol.className = "bracket-column-stage";
-            champCol.style.maxWidth = "200px";
-            let champTeamName = knockoutBracketNodes.Champion[0];
-            let flagBlock = champTeamName !== "TBD" ? getCountryFlagURLElement(champTeamName) : "";
-            
-            champCol.innerHTML = `
-                <div class="bracket-stage-header" style="background-color:rgba(34,197,94,0.15); border-color:var(--accent-success); color:var(--accent-success);">Champion</div>
-                <div style="background-color:var(--bg-card); border:2px solid var(--accent-success); border-radius:8px; padding:1.5rem; text-align:center; box-shadow:0 0 20px rgba(34,197,94,0.25);">
-                    <i class="fa-solid fa-crown" style="font-size:2.5rem; color:var(--accent-warning); margin-bottom:10px; display:block;"></i>
-                    <div style="font-weight:800; font-size:1.1rem; font-family:var(--font-sports);">${champTeamName}</div>
-                    <div style="margin-top:10px;">${flagBlock}</div>
-                </div>
-            `;
-            canvas.appendChild(champCol);
-        }
-
-        /* ==========================================================================
-           6. EVENT REGISTRATION HANDLERS AND UI SYNCHRONIZERS
-           ========================================================================== */
         function registerManualScoreOverride(mKey, teamIndex, value) {
             let parsedVal = parseInt(value);
-            if (isNaN(parsedVal)) {
-                if (manualScoreOverrides[mKey]) {
+            if(isNaN(parsedVal)) {
+                if(manualScoreOverrides[mKey]) {
                     delete manualScoreOverrides[mKey];
                 }
             } else {
-                if (!manualScoreOverrides[mKey]) {
+                if(!manualScoreOverrides[mKey]) {
                     manualScoreOverrides[mKey] = { g1: 0, g2: 0, suffix: "", simulated: false };
                 }
-                if (teamIndex === 1) manualScoreOverrides[mKey].g1 = parsedVal;
-                if (teamIndex === 2) manualScoreOverrides[mKey].g2 = parsedVal;
+                if(teamIndex === 1) manualScoreOverrides[mKey].g1 = parsedVal;
+                if(teamIndex === 2) manualScoreOverrides[mKey].g2 = parsedVal;
                 manualScoreOverrides[mKey].simulated = false;
             }
             tournamentHasUpdatedState = true;
+            
+            // FIXED: Added pipeline trigger to immediately compute standings and update the UI
+            runMasterCalculationPipeline(false); 
         }
 
-        function simulateIndividualGroupPhase(gId) {
-            let schedules = buildGroupMatchupsSchedule(gId);
-            schedules.forEach(mKey => {
-                let { t1, t2 } = unpackMatchKeyMetadata(mKey);
-                let out = runMatchSimulationCore(t1, t2, true, false);
-                manualScoreOverrides[mKey] = { g1: out.g1, g2: out.g2, suffix: out.suffix, simulated: true };
-                out.incidents.forEach(ev => appendTerminalLogMessage(ev.desc, ev.type));
+        function syncInteractiveFixturesFormsInputFieldsValues() {
+            let inputNodes = document.querySelectorAll(".score-input-box");
+            inputNodes.forEach(input => {
+                let mKey = input.getAttribute("data-match-key");
+                let teamIndex = parseInt(input.getAttribute("data-team-idx"));
+                let m = groupFixturesMatchMap[mKey];
+                if(m) {
+                    let targetVal = (teamIndex === 1) ? m.g1 : m.g2;
+                    input.value = (targetVal !== null) ? targetVal : "";
+                }
             });
-            runMasterCalculationPipeline(false);
         }
 
-        function appendTerminalLogMessage(text, styleClass = "") {
-            const box = document.getElementById("terminal-scroll-area-target");
-            let row = document.createElement("div");
-            row.className = `terminal-line-string line-${styleClass}`;
-            row.innerText = text;
-            box.appendChild(row);
+        function drawGraphicalKnockoutTreeFlowDOMStructure() {
+            let rootNode = document.getElementById("render-bracket-structural-flow-root");
+            if(!rootNode) return;
+            rootNode.innerHTML = "";
+
+            const columnsMappingArrayMeta = [
+                { id: "R32", headline: "Round of 32 Stage", class: "stage-r32" },
+                { id: "R16", headline: "Round of 16 Node", class: "stage-r16" },
+                { id: "QF",  headline: "Quarter-Finals Grid", class: "stage-qf" },
+                { id: "SF",  headline: "Semi-Final System", class: "stage-sf" },
+                { id: "GF",  headline: "Championship Trophy Match", class: "stage-grand-final" }
+            ];
+
+            columnsMappingArrayMeta.forEach(colInfo => {
+                let colBlock = document.createElement("div");
+                colBlock.className = `bracket-stage-column ${colInfo.class}`;
+
+                let headerLabel = document.createElement("div");
+                headerLabel.className = "bracket-stage-header-tag";
+                headerLabel.innerText = colInfo.headline;
+                colBlock.appendChild(headerLabel);
+
+                let matchesList = knockoutBracketNodes[colInfo.id] || [];
+                matchesList.forEach(m => {
+                    let card = document.createElement("div");
+                    card.className = "bracket-match-node";
+
+                    let scoreTextA = m.played ? m.g1 : "-";
+                    let scoreTextB = m.played ? m.g2 : "-";
+                    let suffixText = m.suffix || "";
+
+                    let isWinnerA = m.played && m.winner === m.t1;
+                    let isWinnerB = m.played && m.winner === m.t2;
+
+                    let cA = FIFA_CODES[m.t1] || "UN";
+                    let cB = FIFA_CODES[m.t2] || "UN";
+
+                    card.innerHTML = `
+                        <div class="bracket-match-info-strip"><span>${m.id}</span><span>${m.played ? "FINALIZED" : "PENDING"}</span></div>
+                        <div class="bracket-team-line ${isWinnerA ? 'winner-highlight' : ''}">
+                            <div class="bracket-team-identity"><span class="team-flag-icon">${cA}</span><span>${m.t1}</span></div>
+                            <span class="bracket-team-score-span">${scoreTextA}${isWinnerA ? suffixText : ''}</span>
+                        </div>
+                        <div class="bracket-team-line ${isWinnerB ? 'winner-highlight' : ''}">
+                            <div class="bracket-team-identity"><span class="team-flag-icon">${cB}</span><span>${m.t2}</span></div>
+                            <span class="bracket-team-score-span">${scoreTextB}${isWinnerB ? suffixText : ''}</span>
+                        </div>
+                    `;
+                    colBlock.appendChild(card);
+                });
+
+                rootNode.appendChild(colBlock);
+            });
+        }
+
+        function populatePowerHierarchyOverviewTable() {
+            let tbody = document.getElementById("table-body-power-hierarchy");
+            if(!tbody) return;
+            tbody.innerHTML = "";
+
+            let elementsSortedList = Object.keys(TEAM_METRICS).sort((a,b) => TEAM_METRICS[b].elo - TEAM_METRICS[a].elo);
+            
+            for(let i=0; i<12; i++) {
+                let team = elementsSortedList[i];
+                let m = TEAM_METRICS[team];
+                let tr = document.createElement("tr");
+                let badgeClassString = "badge-ranking-metric";
+                if(i===0) badgeClassString += " tier-gold";
+                if(i===1) badgeClassString += " tier-silver";
+                if(i===2) badgeClassString += " tier-bronze";
+
+                tr.innerHTML = `
+                    <td><span class="${badgeClassString}">#${i+1}</span></td>
+                    <td class="col-team"><span class="team-flag-icon">${FIFA_CODES[team] || "UN"}</span>${team}</td>
+                    <td class="col-num" style="font-family:var(--font-mono); font-weight:600;">${m.elo}</td>
+                    <td class="col-num">${m.att}</td>
+                    <td class="col-num">${m.def}</td>
+                    <td class="col-num" style="color:var(--text-muted);">${m.clutch.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        function logSystemMessageText(targetBoxId, msg, classificationStyle = "info-type") {
+            let box = (targetBoxId === "overview") ? document.getElementById("overview-mini-console-log") : document.getElementById("stochastic-processing-terminal-box");
+            if(!box) return;
+
+            let timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let logLine = document.createElement("div");
+            logLine.className = `console-line-log ${classificationStyle}`;
+            logLine.innerHTML = `<span class="console-timestamp-tag">[${timestamp}]</span><span>${msg}</span>`;
+            
+            box.appendChild(logLine);
             box.scrollTop = box.scrollHeight;
         }
 
-        function refreshStatusBoardWidgets() {
-            const ward = document.getElementById("injury-ward-target");
-            ward.innerHTML = "";
-            let injKeys = Object.keys(injuryWardRegistry);
-            if (injKeys.length === 0) {
-                ward.innerHTML = `<li style="color:var(--text-muted); font-size:0.75rem;">No active tournament injuries.</li>`;
-            } else {
-                injKeys.forEach(p => {
-                    let obj = injuryWardRegistry[p];
-                    ward.innerHTML += `<li class="ward-item-row"><b>${p}</b> <span style="color:var(--accent-danger); font-size:0.7rem;"><i class="fa-solid fa-house-medical-flag"></i> ${FIFA_CODES[obj.team]}</span></li>`;
-                });
-            }
+        function resetEntireTournamentStateMatrix() {
+            manualScoreOverrides = {};
+            Object.keys(groupFixturesMatchMap).forEach(k => {
+                let m = groupFixturesMatchMap[k];
+                m.played = false; m.g1 = null; m.g2 = null; m.winner = null; m.suffix = "";
+            });
+            tournamentHasUpdatedState = false;
+            logSystemMessageText("overview", "All override buffers cleared. Standings and tree structural configurations resetting.", "warning-type");
+            runMasterCalculationPipeline(false);
+        }
 
-            const susp = document.getElementById("suspension-ward-target");
-            susp.innerHTML = "";
-            let suspKeys = Object.keys(suspensionWardRegistry);
-            if (suspKeys.length === 0) {
-                susp.innerHTML = `<li style="color:var(--text-muted); font-size:0.75rem;">No active player suspensions.</li>`;
-            } else {
-                suspKeys.forEach(p => {
-                    susp.innerHTML += `<li class="ward-item-row"><b>${p}</b> <span style="color:var(--accent-warning); font-size:0.7rem;">Suspended</span></li>`;
-                });
-            }
-
-            const goalsBlock = document.getElementById("top-scorers-target");
-            goalsBlock.innerHTML = "";
-            let sortedScorers = Object.entries(playerScoringRegistry).sort((a,b) => b[1] - a[1]).slice(0, 7);
-            if (sortedScorers.length === 0) {
-                goalsBlock.innerHTML = `<li style="color:var(--text-muted); font-size:0.75rem;">Awaiting simulation data...</li>`;
-            } else {
-                sortedScorers.forEach(item => {
-                    goalsBlock.innerHTML += `<li class="ward-item-row"><span>${item[0]}</span> <b style="color:var(--accent-success);">${item[1]} Goals</b></li>`;
-                });
-            }
+        function simulateGroupPhaseOnlyAction() {
+            logSystemMessageText("overview", "Batch processing group phase arrays calculations nodes matches paths...", "info-type");
+            runMasterCalculationPipeline(true);
         }
 
         /* ==========================================================================
-           7. INTERACTIVE TACTICAL BLACKBOARD PIPELINES
+           G. MONTE CARLO PROBABILITY STOCHASTIC aggregator LOOPS
            ========================================================================== */
-        function readBlackboardUIAttributes() {
-            return {
-                aggression: parseFloat(document.getElementById("slider-aggression").value),
-                tempo: parseFloat(document.getElementById("slider-tempo").value),
-                depth: parseFloat(document.getElementById("slider-depth").value)
-            };
+        function executeMonteCarloStochasticLoopEngine(iterationsCountInput = 1000) {
+            logSystemMessageText("montecarlo", `Initializing Stochastic Evaluation Engine Loops (${iterationsCountInput} rounds)...`, "info-type");
+            cumulativeMonteCarloTallies = {};
+            UNIQUE_48_TEAMS_LIST.forEach(t => cumulativeMonteCarloTallies[t] = 0);
+
+            let currentLoopIndex = 0;
+            const batchAllocationSteps = 100;
+            
+            function executionBatchSliceStep() {
+                let limitBoundSlice = Math.min(iterationsCountInput - currentLoopIndex, batchAllocationSteps);
+                for(let sliceIdx = 0; sliceIdx < limitBoundSlice; sliceIdx++) {
+                    // Simulate full virtual environment parameters tracking models pathways maps
+                    let sampleGroupsMatchesMap = {};
+                    Object.keys(groupFixturesMatchMap).forEach(k => {
+                        let originalMatch = groupFixturesMatchMap[k];
+                        let res = calculatePoissonExpectancyGoalsProbabilities(originalMatch.t1, originalMatch.t2, false);
+                        sampleGroupsMatchesMap[k] = { ...originalMatch, ...res, played: true };
+                    });
+
+                    // Build group standings matrices matching temporary run conditions values metrics
+                    let virtualGroupsDefManifest = {};
+                    Object.keys(groupsDefManifest).forEach(gKey => {
+                        let originalG = groupsDefManifest[gKey];
+                        let trackingMap = {};
+                        originalG.teams.forEach(team => {
+                            trackingMap[team] = { team: team, mp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
+                        });
+
+                        ["M1", "M2", "M3"].forEach(mSubId => {
+                            let m = sampleGroupsMatchesMap[`${gKey}-${mSubId}`];
+                            let row1 = trackingMap[m.t1];
+                            let row2 = trackingMap[m.t2];
+                            row1.mp++; row2.mp++;
+                            row1.gf += m.g1; row1.ga += m.g2;
+                            row2.gf += m.g2; row2.ga += m.g1;
+                            if(m.g1 > m.g2) { row1.w++; row1.pts += 3; row2.l++; }
+                            else if(m.g2 > m.g1) { row2.w++; row2.pts += 3; row1.l++; }
+                            else { row1.d++; row1.pts += 1; row2.d++; row2.pts += 1; }
+                        });
+
+                        Object.keys(trackingMap).forEach(t => trackingMap[t].gd = trackingMap[t].gf - trackingMap[t].ga);
+                        virtualGroupsDefManifest[gKey] = {
+                            standings: Object.values(trackingMap).sort((a,b) => {
+                                if(b.pts !== a.pts) return b.pts - a.pts;
+                                if(b.gd !== a.gd) return b.gd - a.gd;
+                                return (TEAM_METRICS[b.team]?.elo || 0) - (TEAM_METRICS[a.team]?.elo || 0);
+                            })
+                        };
+                    });
+
+                    // Construct Round of 32 qualifiers
+                    let virtualQualifiedList = [];
+                    ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"].forEach(gKey => {
+                        virtualQualifiedList.push(virtualGroupsDefManifest[gKey].standings[0].team);
+                        virtualQualifiedList.push(virtualGroupsDefManifest[gKey].standings[1].team);
+                    });
+
+                    // Execute knockout loop until single champion is resolved
+                    let activeRoundTeams = [];
+                    for(let i=0; i<16; i++) {
+                        let res = calculatePoissonExpectancyGoalsProbabilities(virtualQualifiedList[i*2], virtualQualifiedList[(i*2+3)%32], true);
+                        activeRoundTeams.push(res.winner);
+                    }
+
+                    const subRoundsCountsList = [8, 4, 2, 1];
+                    subRoundsCountsList.forEach(rc => {
+                        let nextRoundTeams = [];
+                        for(let i=0; i<rc; i++) {
+                            let res = calculatePoissonExpectancyGoalsProbabilities(activeRoundTeams[i*2], activeRoundTeams[i*2+1], true);
+                            nextRoundTeams.push(res.winner);
+                        }
+                        activeRoundTeams = nextRoundTeams;
+                    });
+
+                    let loopFinalChampionString = activeRoundTeams[0];
+                    if(cumulativeMonteCarloTallies[loopFinalChampionString] !== undefined) {
+                        cumulativeMonteCarloTallies[loopFinalChampionString]++;
+                    }
+                    currentLoopIndex++;
+                }
+
+                logSystemMessageText("montecarlo", `Processed simulation iteration blocks count indices: ${currentLoopIndex}/${iterationsCountInput}`, "info-type");
+
+                if(currentLoopIndex < iterationsCountInput) {
+                    setTimeout(executionBatchSliceStep, 0);
+                } else {
+                    renderMonteCarloStochasticDistributionResultsTableHTMLDOM(iterationsCountInput);
+                }
+            }
+
+            setTimeout(executionBatchSliceStep, 0);
         }
 
-        function syncTacticalSlidersAndCanvas() {
-            document.getElementById("val-slider-aggression").innerText = document.getElementById("slider-aggression").value;
-            document.getElementById("val-slider-tempo").innerText = document.getElementById("slider-tempo").value;
-            document.getElementById("val-slider-depth").innerText = document.getElementById("slider-depth").value;
-            
-            const metrics = TEAM_METRICS[activeTacticalTeamString] || { ELO: 1500, PELE: 1500 };
-            const settings = readBlackboardUIAttributes();
-            
-            // Calculate hypothetical adjustments derived from settings
-            let attackFactor = (settings.tempo * 1.2 + settings.aggression * 0.8) / 100;
-            let defenseFactor = (settings.depth * 1.5 + settings.aggression * 0.5) / 100;
-            
-            let mockOff = Math.round(metrics.PELE * attackFactor);
-            let mockDef = Math.round(metrics.ELO / defenseFactor);
-            
-            const card = document.getElementById("tactical-metrics-output-card");
-            card.innerHTML = `
-                <div><strong>Adjusted Tactical Coefficients</strong></div>
-                <div style="display:flex; justify-content:space-between; margin-top:4px;"><span>Offensive Value:</span><span style="color:var(--accent-success); font-weight:700;">${mockOff}</span></div>
-                <div style="display:flex; justify-content:space-between;"><span>Defensive Stiffness:</span><span style="color:var(--accent-primary); font-weight:700;">${mockDef}</span></div>
-            `;
+        function renderMonteCarloStochasticDistributionResultsTableHTMLDOM(totalIterationsCount) {
+            let tbody = document.getElementById("table-body-stochastic-distribution-rows");
+            if(!tbody) return;
+            tbody.innerHTML = "";
+
+            let sortedProbabilitiesList = Object.keys(cumulativeMonteCarloTallies).sort((a,b) => {
+                return cumulativeMonteCarloTallies[b] - cumulativeMonteCarloTallies[a];
+            });
+
+            sortedProbabilitiesList.forEach(teamKey => {
+                let talliesCount = cumulativeMonteCarloTallies[teamKey];
+                let percentageValueRatio = (talliesCount / totalIterationsCount) * 100;
+                
+                if(talliesCount > 0) {
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td class="col-team" style="width:200px;"><span class="team-flag-icon">${FIFA_CODES[teamKey] || "UN"}</span>${teamKey}</td>
+                        <td class="col-num" style="width:100px; font-family:var(--font-mono); font-weight:600; color:var(--accent-primary);">${talliesCount}</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:1rem;">
+                                <div class="progress-bar-track-layout" style="flex:1; background-color:rgba(255,255,255,0.05);">
+                                    <div class="progress-bar-fill-node" style="width:${percentageValueRatio.toFixed(1)}%; background:linear-gradient(to right, var(--accent-primary), var(--accent-neon-glow));"></div>
+                                </div>
+                                <span style="font-family:var(--font-mono); font-size:0.8rem; font-weight:700; width:50px; text-align:right;">${percentageValueRatio.toFixed(1)}%</span>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            logSystemMessageText("montecarlo", "Stochastic matrix loop run completed. Distributions table fully populated.", "success-type");
+        }
+
+        /* ==========================================================================
+           H. TACTICAL BLACKBOARD ARCHITECTURE ENGINE IMPLEMENTATION VISUALS
+           ========================================================================== */
+        function extractSquadRosterManifest(teamKeyNameString) {
+            if(RAW_ROSTERS[teamKeyNameString]) return RAW_ROSTERS[teamKeyNameString];
+            // Fallback dynamically generated standard roster list variables matrices if not explicit
+            let fallbackRosterArray = [{ name: "P. Keeper", pos: "GK" }];
+            for(let i=1; i<=10; i++) {
+                let fallbackPosString = "MF";
+                if(i <= 4) fallbackPosString = "DF";
+                else if(i >= 8) fallbackPosString = "FW";
+                fallbackRosterArray.push({ name: `Player. ${String.fromCharCode(65 + i)}`, pos: fallbackPosString });
+            }
+            return fallbackRosterArray;
         }
 
         function drawTacticalPlayerNodesOnPitch() {
-            const canvas = document.getElementById("pitch-viewport-canvas-target");
-            // Clear existing node element tags but preserve field layout lines markers
-            const nodes = canvas.querySelectorAll(".pitch-player-node");
-            nodes.forEach(n => n.remove());
+            // Evaluates select components attributes parameters values shapes
+            let formationString = document.getElementById("select-tactical-formation").value;
+            let rosterList = extractSquadRosterManifest(activeTacticalTeamString);
             
-            const roster = extractSquadRosterManifest(activeTacticalTeamString);
-            const formation = document.getElementById("select-tactical-formation").value;
+            // Map configuration nodes positions array lists
+            let canvas = document.getElementById("football-tactical-canvas");
+            if(!canvas) return;
+            let ctx = canvas.getContext("2d");
             
-            let coords = [];
-            if (formation === "4-3-3") {
-                coords = [
-                    { pos: "GK", left: 50, top: 92 },
-                    { pos: "DF", left: 15, top: 75 }, { pos: "DF", left: 38, top: 78 }, { pos: "DF", left: 62, top: 78 }, { pos: "DF", left: 85, top: 75 },
-                    { pos: "MF", left: 25, top: 55 }, { pos: "MF", left: 50, top: 58 }, { pos: "MF", left: 75, top: 55 },
-                    { pos: "AT", left: 20, top: 25 }, { pos: "AT", left: 50, top: 20 }, { pos: "AT", left: 80, top: 25 }
-                ];
-            } else if (formation === "4-4-2") {
-                coords = [
-                    { pos: "GK", left: 50, top: 92 },
-                    { pos: "DF", left: 15, top: 75 }, { pos: "DF", left: 38, top: 78 }, { pos: "DF", left: 62, top: 78 }, { pos: "DF", left: 85, top: 75 },
-                    { pos: "MF", left: 15, top: 52 }, { pos: "MF", left: 38, top: 55 }, { pos: "MF", left: 62, top: 55 }, { pos: "MF", left: 85, top: 52 },
-                    { pos: "AT", left: 35, top: 24 }, { pos: "AT", left: 65, top: 24 }
-                ];
-            } else if (formation === "3-5-2") {
-                coords = [
-                    { pos: "GK", left: 50, top: 92 },
-                    { pos: "DF", left: 25, top: 76 }, { pos: "DF", left: 50, top: 78 }, { pos: "DF", left: 75, top: 76 },
-                    { pos: "MF", left: 12, top: 48 }, { pos: "MF", left: 35, top: 52 }, { pos: "MF", left: 50, top: 55 }, { pos: "MF", left: 65, top: 52 }, { pos: "MF", left: 88, top: 48 },
-                    { pos: "AT", left: 35, top: 22 }, { pos: "AT", left: 65, top: 22 }
-                ];
-            } else { // 5-4-1 Defensiveness Layout Blueprint Matrix
-                coords = [
-                    { pos: "GK", left: 50, top: 92 },
-                    { pos: "DF", left: 12, top: 74 }, { pos: "DF", left: 32, top: 76 }, { pos: "DF", left: 50, top: 78 }, { pos: "DF", left: 68, top: 76 }, { pos: "DF", left: 88, top: 74 },
-                    { pos: "MF", left: 15, top: 52 }, { pos: "MF", left: 38, top: 54 }, { pos: "MF", left: 62, top: 54 }, { pos: "MF", left: 85, top: 52 },
-                    { pos: "AT", left: 50, top: 22 }
-                ];
+            // Background green fill setup
+            ctx.fillStyle = "#14231c";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            // Render pitch grid markup paths
+            ctx.strokeStyle = "rgba(255,255,255,0.08)";
+            ctx.lineWidth = 2;
+            
+            // Outer boundaries borders bounds paths outline box
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+            
+            // Center Line markup
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 20);
+            ctx.lineTo(canvas.width / 2, canvas.height - 40);
+            ctx.stroke();
+
+            // Center Circle paths elements metrics markup
+            ctx.beginPath();
+            ctx.arc(canvas.width/2, canvas.height/2, 60, 0, Math.PI*2);
+            ctx.stroke();
+
+            // Penalty Boxes structures lines configurations maps
+            ctx.strokeRect(20, canvas.height/2 - 100, 80, 200);
+            ctx.strokeRect(canvas.width - 100, canvas.height/2 - 100, 80, 200);
+
+            // Place coordinates mapping layers depending on structural formation variable selected strings
+            let positionsVectorsCoordinatesList = [];
+            
+            // Goalkeeper base constant center coordinate node path vector
+            positionsVectorsCoordinatesList.push({ x: 60, y: canvas.height / 2, label: rosterList[0].name, role: "GK" });
+
+            let tokensCountArray = formationString.split("-").map(Number);
+            let dfCount = tokensCountArray[0];
+            let mfCount = tokensCountArray[1];
+            let fwCount = tokensCountArray[2];
+
+            // Distribute lines density layers layout geometries matrices formulas bounds
+            // Defenders mapping loops transformations configurations parameters variables values
+            for(let i=0; i<dfCount; i++) {
+                let yCoord = 50 + ((canvas.height - 100) / (dfCount - 1 || 1)) * i;
+                if(dfCount === 1) yCoord = canvas.height / 2;
+                positionsVectorsCoordinatesList.push({ x: 180, y: yCoord, label: rosterList[1 + i]?.name || "DF", role: "DF" });
             }
 
-            let counters = { "GK": 0, "DF": 0, "MF": 0, "AT": 0 };
-            coords.forEach(item => {
-                let pool = roster[item.pos];
-                let index = counters[item.pos] % pool.length;
-                let data = pool[index];
-                counters[item.pos]++;
-                
-                let el = document.createElement("div");
-                el.className = "pitch-player-node";
-                el.style.left = `${item.left}%`;
-                el.style.top = `${item.top}%`;
-                
-                el.innerHTML = `
-                    <div class="player-node-icon-wrapper">
-                        <i class="fa-solid fa-shirt" style="font-size:0.85rem; color:#fff;"></i>
-                        <div class="player-node-rating-badge">${data[2]}</div>
-                    </div>
-                    <div class="player-node-name-string">${data[0].split(" ").pop()}</div>
-                `;
-                canvas.appendChild(el);
+            // Midfielders layout geometry arrays indexing tracking matrices paths variables shapes
+            for(let i=0; i<mfCount; i++) {
+                let yCoord = 60 + ((canvas.height - 120) / (mfCount - 1 || 1)) * i;
+                if(mfCount === 1) yCoord = canvas.height / 2;
+                positionsVectorsCoordinatesList.push({ x: 340, y: yCoord, label: rosterList[1 + dfCount + i]?.name || "MF", role: "MF" });
+            }
+
+            // Forwards layer allocations vectors matrix transformation loop tracks indices
+            for(let i=0; i<fwCount; i++) {
+                let yCoord = 80 + ((canvas.height - 160) / (fwCount - 1 || 1)) * i;
+                if(fwCount === 1) yCoord = canvas.height / 2;
+                positionsVectorsCoordinatesList.push({ x: 500, y: yCoord, label: rosterList[1 + dfCount + mfCount + i]?.name || "FW", role: "FW" });
+            }
+
+            // Draw individual nodes on canvas view grid systems
+            positionsVectorsCoordinatesList.forEach(node => {
+                let dotColor = "#38bdf8"; // Default primary cyan shade glow vector accent
+                if(node.role === "GK") dotColor = "#eab308";
+                if(node.role === "FW") dotColor = "#ef4444";
+                if(node.role === "DF") dotColor = "#10b981";
+
+                // Node Base Circle Glow Layout
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 10, 0, Math.PI*2);
+                ctx.fillStyle = dotColor;
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Text labels text names strings adjustments matrices properties formatting profiles
+                ctx.fillStyle = "#f1f5f9";
+                ctx.font = "bold 10px 'Inter', sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText(node.label, node.x, node.y - 15);
             });
         }
 
-        /* ==========================================================================
-           8. STOCHASTIC STOCHASTIC MONTE CARLO ENGINE CORE PIPELINE
-           ========================================================================== */
-        function triggerMonteCarloCalculationsPipeline() {
-            const iterations = parseInt(document.getElementById("select-mc-iterations").value);
-            const progressWrapper = document.getElementById("mc-progress-wrapper");
-            const bar = document.getElementById("mc-progress-bar-fill");
-            const txtPct = document.getElementById("mc-progress-pct");
-            
-            progressWrapper.style.display = "block";
-            bar.style.width = "0%";
-            txtPct.innerText = "0%";
+        function syncTacticalSlidersAndCanvas() {
+            let agg = document.getElementById("slider-aggression").value;
+            let tem = document.getElementById("slider-tempo").value;
+            let dep = document.getElementById("slider-depth").value;
 
-            // Initialize global analytic tracking objects arrays data
-            let aggregates = {};
-            Object.keys(TEAM_METRICS).forEach(t => {
-                aggregates[t] = { team: t, groupWin: 0, r32: 0, r16: 0, qf: 0, sf: 0, final: 0, trophy: 0 };
-            });
+            document.getElementById("label-val-aggression").innerText = agg;
+            document.getElementById("label-val-tempo").innerText = tem;
+            document.getElementById("label-val-depth").innerText = dep;
 
-            let completed = 0;
-            // Execute chunk processing routines via timeouts to maintain responsive operational frames
-            function processSimulationBatchChunk() {
-                let chunkLimit = Math.min(50, iterations - completed);
-                for (let count = 0; count < chunkLimit; count++) {
-                    executeSinglePassMonteCarloLoop(aggregates);
-                }
-                completed += chunkLimit;
-                
-                let pct = Math.round((completed / iterations) * 100);
-                bar.style.width = `${pct}%`;
-                txtPct.innerText = `${pct}%`;
-                
-                if (completed < iterations) {
-                    setTimeout(processSimulationBatchChunk, 1);
-                } else {
-                    // Normalize tracking data records array format values against total count scale
-                    globalAnalyticsCollection = Object.values(aggregates).map(item => {
-                        return {
-                            team: item.team,
-                            groupWin: (item.groupWin / iterations) * 100,
-                            r32: (item.r32 / iterations) * 100,
-                            r16: (item.r16 / iterations) * 100,
-                            qf: (item.qf / iterations) * 100,
-                            sf: (item.sf / iterations) * 100,
-                            final: (item.final / iterations) * 100,
-                            trophy: (item.trophy / iterations) * 100
-                        };
-                    });
-                    
-                    progressWrapper.style.display = "none";
-                    sortAndRenderAnalyticsGrid();
-                }
-            }
-            setTimeout(processSimulationBatchChunk, 5);
+            // Draw overlapping dynamic strategy vectors on canvas lines overlays
+            let canvas = document.getElementById("football-tactical-canvas");
+            if(!canvas) return;
+            let ctx = canvas.getContext("2d");
+
+            ctx.strokeStyle = "rgba(56,189,248,0.4)";
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+
+            // Draw dynamic depth line marker bounds transformations checks properties metrics definitions variables
+            let computedDepthLineX = 80 + (parseInt(dep) * 2.2);
+            ctx.beginPath();
+            ctx.moveTo(computedDepthLineX, 20);
+            ctx.lineTo(computedDepthLineX, canvas.height - 20);
+            ctx.stroke();
+
+            // Reset Line Dash configurations patterns sequences references buffers arrays bounds checking indices
+            ctx.setLineDash([]);
         }
 
-        function executeSinglePassMonteCarloLoop(agg) {
-            let localStandings = {};
-            
-            // Loop step 1: Groups stage matrices calculation
-            for (let gId in GROUPS) {
-                let teams = GROUPS[gId];
-                let table = {};
-                teams.forEach(t => { table[t] = { name: t, pts: 0, gd: 0, gf: 0, group: gId }; });
-                
-                let schedules = buildGroupMatchupsSchedule(gId);
-                schedules.forEach(mKey => {
-                    let { t1, t2 } = unpackMatchKeyMetadata(mKey);
-                    let s1, s2;
-                    
-                    // Note: Monte Carlo analysis overrides manual adjustments to evaluate raw statistical baseline odds
-                    let sim = runMatchSimulationCore(t1, t2, true, true);
-                    s1 = sim.g1; s2 = sim.g2;
-                    
-                    table[t1].gf += s1; table[t1].ga += s2;
-                    table[t2].gf += s2; table[t2].ga += s1;
-                    table[t1].gd += (s1 - s2);
-                    table[t2].gd += (s2 - s1);
-                    
-                    if (s1 > s2) { table[t1].pts += 3; }
-                    else if (s2 > s1) { table[t2].pts += 3; }
-                    else { table[t1].pts += 1; table[t2].pts += 1; }
-                });
-
-                localStandings[gId] = Object.values(table).sort((a, b) => {
-                    if (b.pts !== a.pts) return b.pts - a.pts;
-                    if (b.gd !== a.gd) return b.gd - a.gd;
-                    if (b.gf !== a.gf) return b.gf - a.gf;
-                    return (TEAM_METRICS[b.name]?.ELO || 0) - (TEAM_METRICS[a.name]?.ELO || 0);
-                });
-            }
-
-            // Extract 3rd place listings arrays configurations data
-            let thirds = [];
-            for (let gId in localStandings) {
-                agg[localStandings[gId][0].name].groupWin++;
-                thirds.push(localStandings[gId][2]);
-            }
-            thirds.sort((a, b) => {
-                if (b.pts !== a.pts) return b.pts - a.pts;
-                if (b.gd !== a.gd) return b.gd - a.gd;
-                if (b.gf !== a.gf) return b.gf - a.gf;
-                return (TEAM_METRICS[b.name]?.ELO || 0) - (TEAM_METRICS[a.name]?.ELO || 0);
-            });
-
-            let adv1 = []; let adv2 = []; let adv3 = [];
-            for (let gId in localStandings) {
-                adv1.push(localStandings[gId][0].name);
-                adv2.push(localStandings[gId][1].name);
-            }
-            for (let i = 0; i < 8; i++) {
-                if (thirds[i]) adv3.push(thirds[i].name);
-            }
-
-            // Record R32 metric occurrences values across structures
-            adv1.forEach(t => agg[t].r32++);
-            adv2.forEach(t => agg[t].r32++);
-            adv3.forEach(t => agg[t].r32++);
-
-            // Structure R32 active match list arrays setups
-            let currentStageTeams = [];
-            for (let i = 0; i < 16; i++) {
-                currentStageTeams.push([adv1[i], i < 8 ? adv3[i] : adv2[i - 8]]);
-            }
-
-            // Execute Sequential Knock-out processing loops
-            const stagesDefList = ["r16", "qf", "sf", "final", "trophy"];
-            let activePairs = currentStageTeams;
-            
-            stagesDefList.forEach(stageKey => {
-                let winnersList = [];
-                activePairs.forEach(pair => {
-                    let t1 = pair[0]; let t2 = pair[1];
-                    let winner = t1;
-                    if (!t1 && !t2) winner = null;
-                    else if (!t1) winner = t2;
-                    else if (!t2) winner = t1;
-                    else {
-                        let sim = runMatchSimulationCore(t1, t2, false, true);
-                        winner = sim.winner;
-                    }
-                    if (winner) {
-                        if (stageKey !== "trophy") {
-                            agg[winner][stageKey]++;
-                        } else {
-                            agg[winner].trophy++;
-                        }
-                        winnersList.push(winner);
-                    }
-                });
-
-                // Remap array definitions blocks setup for next loop pass
-                if (stageKey !== "trophy") {
-                    let nextPairs = [];
-                    for (let k = 0; k < winnersList.length / 2; k++) {
-                        nextPairs.push([winnersList[k * 2], winnersList[k * 2 + 1]]);
-                    }
-                    activePairs = nextPairs;
-                }
-            });
-        }
-
-        function sortAnalyticsData(columnKey) {
-            if (currentSortColumn === columnKey) {
-                currentSortDirection = currentSortDirection === "asc" ? "desc" : "asc";
-            } else {
-                currentSortColumn = columnKey;
-                currentSortDirection = "desc";
-            }
-            sortAndRenderAnalyticsGrid();
-        }
-
-        function sortAndRenderAnalyticsGrid() {
-            const filterText = document.getElementById("input-analytics-filter").value.toLowerCase();
-            let data = [...globalAnalyticsCollection];
-            
-            // Filter logic
-            if (filterText) {
-                data = data.filter(item => item.team.toLowerCase().includes(filterText) || FIFA_CODES[item.team].toLowerCase().includes(filterText));
-            }
-            
-            // Sort processing logic
-            data.sort((a, b) => {
-                let v1 = a[currentSortColumn];
-                let v2 = b[currentSortColumn];
-                if (typeof v1 === 'string') {
-                    return currentSortDirection === "asc" ? v1.localeCompare(v2) : v2.localeCompare(v1);
-                } else {
-                    return currentSortDirection === "asc" ? v1 - v2 : v2 - v1;
-                }
-            });
-
-            const tbody = document.querySelector("#analytics-table-target tbody");
-            tbody.innerHTML = "";
-            
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:2rem;">No matching team portfolios discovered.</td></tr>`;
-                return;
-            }
-
-            data.forEach(row => {
-                tbody.innerHTML += `<tr>
-                    <td class="team-cell" style="font-weight:600;">${getCountryFlagURLElement(row.team)} <span>${row.team} (${FIFA_CODES[row.team]})</span></td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.groupWin.toFixed(1)}%</td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.r32.toFixed(1)}%</td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.r16.toFixed(1)}%</td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.qf.toFixed(1)}%</td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.sf.toFixed(1)}%</td>
-                    <td style="text-align:center; font-family:var(--font-mono);">${row.final.toFixed(1)}%</td>
-                    <td style="font-weight:700; text-align:center; color:var(--accent-success); font-family:var(--font-mono);">
-                        ${row.trophy.toFixed(1)}%
-                        <div class="probability-bar-track"><div class="probability-bar-fill" style="width:${row.trophy}%; background-color:var(--accent-success);"></div></div>
-                    </td>
-                </tr>`;
-            });
-        }
-
-        /* ==========================================================================
-           9. LAYOUT SELECTION WINDOW CONTROLLER HANDLERS
-           ========================================================================== */
-        function switchActiveTab(event, tabId) {
-            const panels = document.querySelectorAll(".main-content-canvas .tab-view-panel");
-            panels.forEach(p => p.removeClassName = p.classList.remove("active"));
-            
-            const tabButtons = document.querySelectorAll(".tab-navigator-container .tab-button");
-            tabButtons.forEach(btn => btn.classList.remove("active"));
-            
-            document.getElementById(tabId).classList.add("active");
-            event.currentTarget.classList.add("active");
-
-            // Contextual initialization maps overrides for pitch tab views
-            if (tabId === "tab-tactical") {
-                drawTacticalPlayerNodesOnPitch();
-            }
-        }
-
-        function clearGlobalDataStatesPipeline() {
-            manualScoreOverrides = {};
-            injuryWardRegistry = {};
-            suspensionWardRegistry = {};
-            playerScoringRegistry = {};
-            tournamentHasUpdatedState = false;
-            
-            document.getElementById("terminal-scroll-area-target").innerHTML = `<div style="color:var(--text-muted);">Terminal logs wiped. Storage registers normalized. Ready for calculation pass execution.</div>`;
-            runMasterCalculationPipeline(false);
-            
-            const table_tbody = document.querySelector("#analytics-table-target tbody");
-            table_tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 2rem;">No analytics computed yet. Execute the stochastic loop engine to construct data mappings.</td></tr>`;
-        }
-
-        /* ==========================================================================
-           10. INITIALIZATION CORES BINDINGS REGISTRATION
-           ========================================================================== */
         function initializeApplicationCoreEngineListeners() {
-            // Bind header triggers
-            document.getElementById("btn-global-update").addEventListener("click", () => runMasterCalculationPipeline(false));
-            document.getElementById("btn-global-simulate").addEventListener("click", () => {
-                document.getElementById("terminal-scroll-area-target").innerHTML = "";
-                appendTerminalLogMessage("🚀 INITIALIZING FULL SIMULATION PIPELINE RUN PASS...", "header");
-                runMasterCalculationPipeline(true);
-            });
-            document.getElementById("btn-global-reset").addEventListener("click", clearGlobalDataStatesPipeline);
+            logSystemMessageText("overview", "Booting system configuration layout blocks initialization paths...", "info-type");
             
-            // Bind analytic buttons
-            document.getElementById("btn-run-analytics").addEventListener("click", triggerMonteCarloCalculationsPipeline);
-            document.getElementById("input-analytics-filter").addEventListener("input", sortAndRenderAnalyticsGrid);
-            document.getElementById("btn-clear-terminal").addEventListener("click", () => {
-                document.getElementById("terminal-scroll-area-target").innerHTML = "";
-            });
+            // Build groups structures assignments
+            allocateStructuredGroupsMatrix();
 
-            // Populate blackboard configurations dropdown lists tags
-            const selector = document.getElementById("select-tactical-team");
+            // Populate power matrix cards view list array structures
+            populatePowerHierarchyOverviewTable();
+
+            // Append team lists into selector DOM options elements properties tracking sequences maps references loops
+            let selector = document.getElementById("select-tactical-team");
             Object.keys(TEAM_METRICS).sort().forEach(teamKey => {
                 let opt = document.createElement("option");
                 opt.value = teamKey;
